@@ -89,3 +89,21 @@ exports.regenerateFeedback = async (req, res, next) => {
     next(error);
   }
 };
+// controllers/submissionController.js
+
+// ... existing code ...
+
+exports.previewFeedback = async (req, res, next) => {
+  try {
+    const { content, category } = req.body;
+    if (!content || !category) {
+      throw new AppError('Content and category are required', 400);
+    }
+
+    const feedbackService = FeedbackFactory.getService();
+    const feedback = await feedbackService.generateFeedback(content, category);
+    res.status(200).json(ApiResponse.success({ feedback }, 'Feedback preview generated'));
+  } catch (error) {
+    next(error);
+  }
+};
