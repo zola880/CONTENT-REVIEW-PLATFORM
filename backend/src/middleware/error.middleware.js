@@ -1,3 +1,4 @@
+// Centralized error handling middleware for Express.js applications
 const { ApiResponse } = require('../utils/ApiResponse');
 const logger = require('../utils/logger');
 
