@@ -107,3 +107,46 @@ exports.previewFeedback = async (req, res, next) => {
     next(error);
   }
 };
+
+// Update submission (rename title)
+exports.updateSubmission = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { title } = req.body;
+    const userId = req.user.id;
+
+    if (!title || title.trim().length < 3) {
+      throw new AppError('Title must be at least 3 characters', 400);
+    }
+
+    const submission = await Submission.findOne({ _id: id, user: userId });
+    if (!submission) {
+      throw new AppError('Submission not found or access denied', 404);
+    }
+
+    submission.title = title.trim();
+    await submission.save();
+
+    res.status(200).json(ApiResponse.success(submission, 'Submission updated successfully'));
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Delete submission
+exports.deleteSubmission = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    const submission = await Submission.findOne({ _id: id, user: userId });
+    if (!submission) {
+      throw new AppError('Submission not found or access denied', 404);
+    }
+
+    await Submission.deleteOne({ _id: id });
+    res.status(200).json(ApiResponse.success(null, 'Submission deleted successfully'));
+  } catch (error) {
+    next(error);
+  }
+};
