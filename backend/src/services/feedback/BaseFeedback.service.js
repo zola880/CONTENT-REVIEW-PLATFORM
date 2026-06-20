@@ -1,3 +1,4 @@
+// BaseFeedbackService.js - Abstract class for feedback generation services. Defines the interface for generating feedback based on content and category. Subclasses must implement the generateFeedback method to provide specific feedback logic.
 class BaseFeedbackService {
   /**
    * Generate feedback for given content.
@@ -10,4 +11,4 @@ class BaseFeedbackService {
   }
 }
 
-module.exports = BaseFeedbackService;
+module.exports = BaseFeedbackService
