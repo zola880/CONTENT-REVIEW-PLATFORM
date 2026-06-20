@@ -38,3 +38,4 @@ class ApiResponse {
 }
 
 module.exports = { ApiResponse };
+// Utility class for standardizing API responses in the content review platform backend. Provides static methods to generate consistent response formats for successful operations, errors, and paginated results. The success method returns a standard success response with data and an optional message, while the error method returns a standardized error response with an error message and status code. The paginated method is used for endpoints that return paginated data, including pagination metadata such as current page, limit, total items, and total pages.
