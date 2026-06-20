@@ -1,3 +1,4 @@
+// Middleware to protect routes and ensure only authenticated users can access them
 const jwt = require('jsonwebtoken');
 const AppError = require('../utils/AppError');
 const { jwtSecret } = require('../config/env');
