@@ -42,3 +42,4 @@ class AuthService {
 }
 
 module.exports = AuthService;
+// Service for handling authentication logic, including user registration and login. Provides methods to generate JWT tokens and validate user credentials. Interacts with the User model to create new users and verify existing users during login. Throws appropriate errors for invalid credentials or duplicate registrations.
