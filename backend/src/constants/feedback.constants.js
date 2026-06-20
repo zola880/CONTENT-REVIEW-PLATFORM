@@ -27,3 +27,4 @@ module.exports = {
   CLARITY_THRESHOLDS,
   SUGGESTIONS,
 };
+// This file defines constants used in the feedback generation process for the content review platform. It includes thresholds for categorizing readability and clarity scores into different levels (excellent, good, fair, poor) and a set of suggestion templates that can be used to provide actionable feedback to users based on the analysis of their content. These constants help standardize the feedback provided and make it easier to maintain and update the feedback logic in the future.
