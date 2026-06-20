@@ -1,4 +1,8 @@
+const dotenv = require('dotenv');
 const Joi = require('joi');
+
+// Load environment variables from .env file
+dotenv.config();
 
 const envSchema = Joi.object({
   PORT: Joi.number().default(5000),
