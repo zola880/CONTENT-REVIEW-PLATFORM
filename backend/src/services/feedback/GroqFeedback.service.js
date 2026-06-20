@@ -67,3 +67,4 @@ class GroqFeedbackService extends BaseFeedbackService {
 }
 
 module.exports = GroqFeedbackService;
+// Service for generating feedback using the Groq API. It constructs a prompt based on the content and category, sends a request to the Groq API, and processes the response to extract readability and clarity scores along with improvement suggestions. The service includes error handling to manage cases where the API response is not in the expected format or when the API call fails, ensuring that meaningful feedback is provided to users even in edge cases.
