@@ -14,4 +14,4 @@ const regenerateFeedbackSchema = Joi.object({
 module.exports = {
   createSubmissionSchema,
   regenerateFeedbackSchema,
-};
+};// Validation schemas for submission-related routes, including creating a new submission and regenerating feedback. Uses Joi to define the expected structure and constraints for incoming request data, ensuring that title, content, and category fields meet the required criteria before processing the request further.
