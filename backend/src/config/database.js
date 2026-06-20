@@ -1,3 +1,4 @@
+//here we connect to the database using mongoose and export the connection function
 const mongoose = require('mongoose');
 const logger = require('../utils/logger');
 const { mongoUri } = require('./env');
