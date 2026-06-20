@@ -45,4 +45,4 @@ app.use((req, res, next) => {
 // Global error handler
 app.use(errorHandler);
 
-module.exports = app;
+module.exports = app;// Main application file for the content review platform backend. Sets up Express.js server with security middlewares, rate limiting, body parsing, and routes for authentication and submissions. Also includes a health check endpoint and centralized error handling.
