@@ -1,3 +1,4 @@
+// Mongoose model for user submissions, including feedback structure and indexing for efficient queries
 const mongoose = require('mongoose');
 const { CATEGORIES } = require('../constants/app.constants');
 
