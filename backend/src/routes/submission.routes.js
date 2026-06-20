@@ -1,0 +1,16 @@
+const express = require('express');
+const router = express.Router();
+const submissionController = require('../controllers/submission.controller');
+const authMiddleware = require('../middleware/auth.middleware');
+const validate = require('../middleware/validation.middleware');
+const { createSubmissionSchema } = require('../validations/submission.validation');
+
+// All routes require authentication
+router.use(authMiddleware);
+
+router.post('/', validate(createSubmissionSchema), submissionController.createSubmission);
+router.get('/', submissionController.getSubmissions);
+router.get('/:id', submissionController.getSubmissionById);
+router.post('/:id/regenerate-feedback', submissionController.regenerateFeedback);
+
+module.exports = router;
