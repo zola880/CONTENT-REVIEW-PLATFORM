@@ -1,3 +1,4 @@
+// Middleware for validating request data using Joi schemas
 const AppError = require('../utils/AppError');
 
 const validate = (schema, source = 'body') => {
