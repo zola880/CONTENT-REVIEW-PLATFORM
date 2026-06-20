@@ -73,3 +73,4 @@ class RuleBasedFeedbackService extends BaseFeedbackService {
 }
 
 module.exports = RuleBasedFeedbackService;
+// This service provides a rule-based feedback mechanism for evaluating the readability and clarity of user-submitted content. It calculates scores based on average sentence length, average word length, and the presence of passive voice. It also generates suggestions for improvement based on these metrics. This is a fallback mechanism in case the AI-based feedback generation fails, ensuring that users still receive valuable insights on their submissions.
