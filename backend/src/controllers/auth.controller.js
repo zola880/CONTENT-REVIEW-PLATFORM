@@ -3,7 +3,7 @@ const { ApiResponse } = require('../utils/ApiResponse');
 const { registerSchema, loginSchema } = require('../validations/auth.validation');
 const validate = require('../middleware/validation.middleware');
 
-// We'll use the validation middleware in routes, so controller doesn't need to validate again.
+// We'll use the validation middleware in routes, so controller doesn't need to validate again
 
 exports.register = async (req, res, next) => {
   try {
