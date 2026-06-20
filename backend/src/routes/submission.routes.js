@@ -1,3 +1,4 @@
+// Routes for handling submission-related endpoints, including creating submissions, retrieving submissions, and regenerating feedback. All routes are protected by authentication middleware.
 const express = require('express');
 const router = express.Router();
 const submissionController = require('../controllers/submission.controller');
