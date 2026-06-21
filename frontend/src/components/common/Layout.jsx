@@ -1,45 +1,54 @@
-import { useAuth } from '../../contexts/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import Sidebar from './Sidebar';
 
 const Layout = ({ children }) => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  const closeSidebar = () => setSidebarOpen(false);
 
   return (
-    <div className="min-h-screen bg-secondary">
-      <nav className="bg-primary shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <Link to="/" className="flex items-center space-x-2">
-                <svg className="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                <span className="text-xl font-bold text-white">Content Review</span>
-              </Link>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-white/80 text-sm">Welcome, {user?.name}</span>
-              <button
-                onClick={handleLogout}
-                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-primary bg-accent hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
-              >
-                <ArrowRightOnRectangleIcon className="h-4 w-4 mr-1" />
-                Logout
-              </button>
-            </div>
-          </div>
+    <div className="flex h-screen bg-secondary overflow-hidden">
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-primary/50 z-20 md:hidden"
+          onClick={closeSidebar}
+        />
+      )}
+
+      {/* Sidebar – fixed on desktop, slides on mobile */}
+      <aside
+        className={`
+          fixed inset-y-0 left-0 z-30 w-64 bg-primary shadow-xl transform transition-transform duration-300 ease-in-out
+          md:relative md:translate-x-0 md:flex md:flex-col
+          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+        `}
+      >
+        <Sidebar closeMobile={closeSidebar} />
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {/* Top bar (mobile only) */}
+        <div className="md:hidden bg-primary px-4 py-3 flex items-center justify-between">
+          <button onClick={toggleSidebar} className="text-white">
+            {sidebarOpen ? (
+              <XMarkIcon className="h-6 w-6" />
+            ) : (
+              <Bars3Icon className="h-6 w-6" />
+            )}
+          </button>
+          <span className="text-white font-bold text-lg">Content Review</span>
+          <div className="w-6" /> {/* spacer */}
         </div>
-      </nav>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {children}
-      </main>
+
+        {/* Page content */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-6">
+          {children}
+        </main>
+      </div>
     </div>
   );
 };
