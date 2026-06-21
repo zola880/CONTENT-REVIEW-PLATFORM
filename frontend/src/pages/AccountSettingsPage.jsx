@@ -90,7 +90,7 @@ const AccountSettingsPage = () => {
         <div className="p-6 md:p-8">
           <div className="flex items-center space-x-2 mb-2">
             <TrashIcon className="h-5 w-5 text-error" />
-            <h3 className="text-lg font-semibold text-error">Danger Zone</h3>
+            <h3 className="text-lg font-semibold text-error"></h3>
           </div>
           <p className="text-sm text-text-light mb-4">
             Permanently delete all your submissions and associated feedback. This action <strong>cannot</strong> be undone.

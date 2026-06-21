@@ -2,75 +2,180 @@ const BaseFeedbackService = require('./BaseFeedback.service');
 const { SUGGESTIONS } = require('../../constants/feedback.constants');
 
 class RuleBasedFeedbackService extends BaseFeedbackService {
+  /**
+   * Generate feedback using advanced heuristics.
+   * Scores: 0-100, higher is better.
+   * Returns object with readabilityScore, clarityScore, and suggestions array.
+   */
   async generateFeedback(content, category) {
-    // Simple readability: average sentence length and average word length
-    const sentences = content.match(/[^.!?]+[.!?]+/g) || [content];
-    const words = content.match(/\b\w+\b/g) || [];
+    // --- Preprocess ---
+    const trimmed = content.trim();
+    if (!trimmed) {
+      return {
+        readabilityScore: 0,
+        clarityScore: 0,
+        suggestions: [
+          'Your content is empty. Please write something meaningful.',
+          'Add a clear topic and purpose to your text.',
+          'Use examples and details to support your message.'
+        ]
+      };
+    }
+
+    // Split into sentences and words
+    const sentenceRegex = /[^.!?]+[.!?]+/g;
+    const sentences = trimmed.match(sentenceRegex) || [trimmed];
+    const words = trimmed.match(/\b\w+\b/g) || [];
     const totalSentences = sentences.length;
     const totalWords = words.length;
 
-    // Average word length (characters)
-    const totalChars = words.reduce((sum, w) => sum + w.length, 0);
-    const avgWordLength = totalWords > 0 ? totalChars / totalWords : 0;
-    // Average words per sentence
+    // --- Check for gibberish / placeholder text ---
+    // Heuristic: if average word length is extremely high (e.g., > 10) or
+    // the text contains only random characters (no common vowels or patterns),
+    // we flag it as gibberish.
+    let isGibberish = false;
+    if (totalWords > 0) {
+      const avgWordLen = words.reduce((sum, w) => sum + w.length, 0) / totalWords;
+      // If average word length > 10, likely gibberish or random characters
+      if (avgWordLen > 10) isGibberish = true;
+      // Check for English-like character distribution (quick vowel check)
+      const charCount = trimmed.replace(/\s/g, '').length;
+      if (charCount > 0) {
+        const vowelCount = (trimmed.match(/[aeiou]/gi) || []).length;
+        const vowelRatio = vowelCount / charCount;
+        // Very low vowel ratio indicates nonsensical text
+        if (vowelRatio < 0.1 && charCount > 3) isGibberish = true;
+      }
+    }
+
+    if (isGibberish) {
+      return {
+        readabilityScore: 10,
+        clarityScore: 5,
+        suggestions: [
+          'Your text appears to be gibberish or placeholder content. Please replace it with actual, meaningful text.',
+          'Define a clear purpose: what are you trying to communicate?',
+          'Use real words and sentences that convey information.',
+          'Consider breaking your content into logical sections with a clear introduction, body, and conclusion.'
+        ].slice(0, 3) // ensure at least 3 suggestions
+      };
+    }
+
+    // If extremely short (< 5 words), treat as insufficient content
+    if (totalWords < 5) {
+      return {
+        readabilityScore: 20,
+        clarityScore: 15,
+        suggestions: [
+          'Your content is too short (less than 5 words). Expand it to provide meaningful information.',
+          'Add context: who is this for? What is the main message?',
+          'Include specific details, examples, or benefits to make the content useful.'
+        ]
+      };
+    }
+
+    // --- Compute readability score (simplified Flesch Reading Ease) ---
+    // Approximate syllables: average word length <= 5 => easy, >5 => harder
+    const avgWordLength = totalWords > 0
+      ? words.reduce((sum, w) => sum + w.length, 0) / totalWords
+      : 0;
     const avgWordsPerSentence = totalSentences > 0 ? totalWords / totalSentences : 0;
 
-    // Approximate readability score (0-100): longer sentences/words lower score
+    // Base score starts at 100, penalize long sentences and long words
     let readability = 100;
-    if (avgWordsPerSentence > 20) readability -= 15;
-    else if (avgWordsPerSentence > 15) readability -= 8;
-    if (avgWordLength > 6) readability -= 10;
-    else if (avgWordLength > 5) readability -= 5;
+    // Penalties for long sentences
+    if (avgWordsPerSentence > 20) readability -= 20;
+    else if (avgWordsPerSentence > 15) readability -= 10;
+    else if (avgWordsPerSentence > 12) readability -= 5;
+    // Penalties for long words
+    if (avgWordLength > 6) readability -= 15;
+    else if (avgWordLength > 5) readability -= 8;
+    else if (avgWordLength > 4.5) readability -= 3;
     // Bonus for short sentences
     if (avgWordsPerSentence < 10) readability += 5;
+    // Clamp
     readability = Math.min(100, Math.max(0, readability));
 
-    // Clarity: detect passive voice (simple regex: "be" + past participle) and sentence variety
+    // --- Compute clarity score ---
     let clarity = 80; // start high
+
+    // 1. Passive voice detection (excessive passive indicates vagueness)
     const passiveRegex = /\b(am|is|are|was|were|be|been|being)\s+\w+ed\b/gi;
-    const passiveMatches = content.match(passiveRegex) || [];
+    const passiveMatches = trimmed.match(passiveRegex) || [];
     const passiveRatio = totalWords > 0 ? passiveMatches.length / totalWords : 0;
-    if (passiveRatio > 0.05) clarity -= 20;
-    else if (passiveRatio > 0.02) clarity -= 10;
-    // Sentence variety: standard deviation of sentence lengths (simplified)
+    if (passiveRatio > 0.05) clarity -= 25;
+    else if (passiveRatio > 0.02) clarity -= 12;
+
+    // 2. Sentence length variety (too uniform -> less engaging)
     if (totalSentences > 1) {
       const lengths = sentences.map(s => s.split(/\s+/).length);
       const avg = lengths.reduce((a, b) => a + b, 0) / lengths.length;
       const variance = lengths.reduce((sum, l) => sum + (l - avg) ** 2, 0) / lengths.length;
       const stdDev = Math.sqrt(variance);
-      if (stdDev < 2) clarity -= 10;
+      if (stdDev < 1.5) clarity -= 10;
     }
+
+    // 3. Overuse of complex words (avg word length > 5.5)
+    if (avgWordLength > 5.5) clarity -= 10;
+
+    // 4. Check for clear structure: presence of topic sentences or transition words
+    const transitionWords = /\b(however|therefore|moreover|furthermore|in addition|for example|specifically|in conclusion|first|second|finally)\b/i;
+    if (!transitionWords.test(trimmed)) {
+      clarity -= 5;
+    }
+
     clarity = Math.min(100, Math.max(0, clarity));
 
-    // Suggestions based on rules
+    // --- Generate Suggestions ---
     const suggestions = [];
+
+    // Readability suggestions
     if (avgWordsPerSentence > 20) {
-      suggestions.push(SUGGESTIONS.SHORTEN_SENTENCES);
-    }
-    if (passiveRatio > 0.05) {
-      suggestions.push(SUGGESTIONS.REDUCE_PASSIVE);
-    }
-    if (!content.includes('benefit') && !content.includes('advantage') && !content.includes('value')) {
-      suggestions.push(SUGGESTIONS.ADD_SPECIFICS);
+      suggestions.push('Shorten your sentences to improve readability. Aim for an average of 15-20 words per sentence.');
+    } else if (avgWordsPerSentence > 15) {
+      suggestions.push('Consider breaking up long sentences into shorter ones to enhance flow.');
     }
     if (avgWordLength > 6) {
-      suggestions.push(SUGGESTIONS.SIMPLIFY_WORDS);
+      suggestions.push('Replace complex words with simpler alternatives to make your content more accessible.');
     }
-    if (totalSentences > 1 && suggestions.length === 0) {
-      suggestions.push(SUGGESTIONS.VARY_SENTENCE_LENGTH);
+
+    // Clarity suggestions
+    if (passiveRatio > 0.05) {
+      suggestions.push('Use active voice more often to make your writing clearer and more direct.');
     }
-    // Ensure at least one suggestion
-    if (suggestions.length === 0) {
-      suggestions.push('Consider adding more specific examples to strengthen the content.');
+    if (totalSentences > 1 && clarity < 70) {
+      suggestions.push('Vary your sentence length to keep the reader engaged.');
     }
+    if (!transitionWords.test(trimmed)) {
+      suggestions.push('Use transition words (e.g., "however", "therefore", "for example") to guide your reader through the argument.');
+    }
+
+    // Content quality suggestions
+    if (!content.includes('benefit') && !content.includes('advantage') && !content.includes('value')) {
+      suggestions.push('Add specific benefits or value propositions to make your content more persuasive.');
+    }
+    if (totalWords < 50) {
+      suggestions.push('Expand your content with more details, examples, or supporting data.');
+    }
+
+    // Ensure at least 3 suggestions
+    while (suggestions.length < 3) {
+      suggestions.push('Consider structuring your content with a clear introduction, body, and conclusion.');
+      if (suggestions.length < 3) {
+        suggestions.push('Review your content for consistency and accuracy.');
+      }
+    }
+
+    // Remove duplicates (if any) and limit to 5
+    const uniqueSuggestions = [...new Set(suggestions)];
+    const finalSuggestions = uniqueSuggestions.slice(0, 5);
 
     return {
       readabilityScore: Math.round(readability),
       clarityScore: Math.round(clarity),
-      suggestions,
+      suggestions: finalSuggestions,
     };
   }
 }
 
 module.exports = RuleBasedFeedbackService;
-// This service provides a rule-based feedback mechanism for evaluating the readability and clarity of user-submitted content. It calculates scores based on average sentence length, average word length, and the presence of passive voice. It also generates suggestions for improvement based on these metrics. This is a fallback mechanism in case the AI-based feedback generation fails, ensuring that users still receive valuable insights on their submissions.

@@ -1,27 +1,30 @@
 const Joi = require('joi');
 const { CATEGORIES } = require('../constants/app.constants');
 
+// Schema for creating a new submission
 const createSubmissionSchema = Joi.object({
   title: Joi.string().min(3).max(100).required(),
   content: Joi.string().min(10).max(10000).required(),
   category: Joi.string().valid(...CATEGORIES).required(),
 });
+
+// Schema for previewing feedback – allows extra fields (like 'title') from the form
 const previewFeedbackSchema = Joi.object({
   content: Joi.string().min(10).max(10000).required(),
   category: Joi.string().valid(...CATEGORIES).required(),
-});
+}).unknown(true); // ✅ allows additional fields (e.g., title) without error
 
-const regenerateFeedbackSchema = Joi.object({
-  // No body needed, just submission ID in params
-});
+// Schema for updating a submission title (rename)
 const updateSubmissionSchema = Joi.object({
   title: Joi.string().min(3).max(100).required(),
 });
 
+// Schema for regenerating feedback (no body needed)
+const regenerateFeedbackSchema = Joi.object({});
+
 module.exports = {
   createSubmissionSchema,
   previewFeedbackSchema,
+  updateSubmissionSchema,
   regenerateFeedbackSchema,
-  updateSubmissionSchema
 };
-// Validation schemas for submission-related routes, including creating a new submission and regenerating feedback. Uses Joi to define the expected structure and constraints for incoming request data, ensuring that title, content, and category fields meet the required criteria before processing the request further.

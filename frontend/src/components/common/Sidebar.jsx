@@ -17,20 +17,19 @@ const Sidebar = ({ closeMobile }) => {
   const navigate = useNavigate();
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [dropdownOpen, setDropdownOpen] = useState(null); // submission id
-  const [dropdownEl, setDropdownEl] = useState(null); // DOM element of the open dropdown container
+  const [dropdownOpen, setDropdownOpen] = useState(null);
+  const [dropdownEl, setDropdownEl] = useState(null);
   const [renameModalOpen, setRenameModalOpen] = useState(false);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [newTitle, setNewTitle] = useState('');
 
-  // Fetch recent submissions
   const fetchRecent = async () => {
     setLoading(true);
     try {
       const response = await getSubmissions(1, 8);
       setSubmissions(response.data || []);
     } catch (err) {
-      // silent fail
+      // silent
     } finally {
       setLoading(false);
     }
@@ -40,7 +39,6 @@ const Sidebar = ({ closeMobile }) => {
     fetchRecent();
   }, []);
 
-  // ----- Click-outside & Escape handlers -----
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownEl && !dropdownEl.contains(event.target)) {
@@ -48,24 +46,20 @@ const Sidebar = ({ closeMobile }) => {
         setDropdownEl(null);
       }
     };
-
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
         setDropdownOpen(null);
         setDropdownEl(null);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('keydown', handleEscape);
-
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscape);
     };
   }, [dropdownEl]);
 
-  // ----- Actions -----
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this submission?')) return;
     try {
@@ -108,7 +102,6 @@ const Sidebar = ({ closeMobile }) => {
     if (closeMobile) closeMobile();
   };
 
-  // Navigation links
   const navigation = [
     { name: 'Dashboard', href: '/', icon: HomeIcon },
     { name: 'New Submission', href: '/submissions/new', icon: PlusIcon },
@@ -152,7 +145,7 @@ const Sidebar = ({ closeMobile }) => {
           ))}
         </nav>
 
-        {/* Recent Submissions List – title only + dots */}
+        {/* Recent Submissions List */}
         <div className="flex-1 overflow-y-auto px-4 py-3">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-xs font-semibold text-white/50 uppercase tracking-wider">Recent Submissions</h3>
@@ -205,7 +198,6 @@ const Sidebar = ({ closeMobile }) => {
                       <EllipsisVerticalIcon className="h-5 w-5" />
                     </button>
                   </div>
-                  {/* Dropdown container */}
                   {dropdownOpen === sub._id && (
                     <div
                       ref={(el) => setDropdownEl(el)}
@@ -235,9 +227,17 @@ const Sidebar = ({ closeMobile }) => {
           )}
         </div>
 
-        {/* Bottom Section – User & Logout */}
+        {/* Bottom Section – User & Logout – now with Link to /account */}
         <div className="border-t border-white/10 px-4 py-4">
-          <div className="flex items-center space-x-3 mb-3">
+          <Link
+            to="/account"
+            onClick={() => {
+              if (closeMobile) closeMobile();
+              setDropdownOpen(null);
+              setDropdownEl(null);
+            }}
+            className="flex items-center space-x-3 mb-3 hover:bg-white/10 rounded-lg p-2 transition duration-150"
+          >
             <div className="flex-shrink-0">
               <div className="h-10 w-10 rounded-full bg-accent text-primary flex items-center justify-center font-bold text-lg">
                 {user?.name?.charAt(0).toUpperCase() || 'U'}
@@ -247,7 +247,7 @@ const Sidebar = ({ closeMobile }) => {
               <p className="text-sm font-medium truncate">{user?.name}</p>
               <p className="text-xs text-white/60 truncate">{user?.email}</p>
             </div>
-          </div>
+          </Link>
           <button
             onClick={handleLogout}
             className="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-white/10 rounded-lg transition duration-150"

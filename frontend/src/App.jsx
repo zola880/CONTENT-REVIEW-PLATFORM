@@ -8,6 +8,7 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import NewSubmissionPage from './pages/NewSubmissionPage';
 import SubmissionDetailPage from './pages/SubmissionDetailPage';
+import AccountSettingsPage from './pages/AccountSettingsPage'; // ✅ import
 
 function App() {
   return (
@@ -43,6 +44,17 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <SubmissionDetailPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          {/* ✅ New route – inside <Routes> */}
+          <Route
+            path="/account"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <AccountSettingsPage />
                 </Layout>
               </ProtectedRoute>
             }
