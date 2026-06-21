@@ -6,7 +6,11 @@ import EmptyState from '../common/EmptyState';
 import ErrorMessage from '../common/ErrorMessage';
 import { deleteSubmission, updateSubmission } from '../../api/submissions.api';
 import { toast } from 'react-hot-toast';
-import { DotsVerticalIcon, PencilIcon, TrashIcon } from '@heroicons/react/outline';
+import { 
+  EllipsisVerticalIcon, 
+  PencilIcon, 
+  TrashIcon 
+} from '@heroicons/react/24/outline';
 
 const SubmissionList = () => {
   const [page, setPage] = useState(1);
@@ -99,7 +103,7 @@ const SubmissionList = () => {
                           onClick={() => setDropdownOpen(dropdownOpen === sub._id ? null : sub._id)}
                           className="text-gray-400 hover:text-gray-600 focus:outline-none"
                         >
-                          <DotsVerticalIcon className="h-5 w-5" />
+                          <EllipsisVerticalIcon className="h-5 w-5" />
                         </button>
                         {dropdownOpen === sub._id && (
                           <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
@@ -152,7 +156,7 @@ const SubmissionList = () => {
         )}
       </div>
 
-      {/* Rename Modal – improved design */}
+      {/* Rename Modal */}
       {showRenameModal && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-20">
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">

@@ -5,10 +5,14 @@ import {
   DocumentTextIcon, 
   EyeIcon, 
   SparklesIcon 
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 
 const SummaryCards = () => {
-  const [stats, setStats] = useState({ total: 0, avgReadability: 0, avgClarity: 0 });
+  const [stats, setStats] = useState({ 
+    total: 0, 
+    avgReadability: 0, 
+    avgClarity: 0 
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

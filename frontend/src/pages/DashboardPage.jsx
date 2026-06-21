@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import SummaryCards from '../components/dashboard/SummaryCards';
 import SubmissionList from '../components/dashboard/SubmissionList';
-import { PlusIcon } from '@heroicons/react/outline';
+import { PlusIcon } from '@heroicons/react/24/outline';
 
 const DashboardPage = () => {
   return (
