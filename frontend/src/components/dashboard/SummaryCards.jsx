@@ -8,11 +8,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 const SummaryCards = () => {
-  const [stats, setStats] = useState({ 
-    total: 0, 
-    avgReadability: 0, 
-    avgClarity: 0 
-  });
+  const [stats, setStats] = useState({ total: 0, avgReadability: 0, avgClarity: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -52,19 +48,19 @@ const SummaryCards = () => {
       label: 'Total Submissions',
       value: stats.total,
       icon: DocumentTextIcon,
-      bg: 'bg-gradient-to-br from-blue-500 to-indigo-600',
+      bg: 'bg-primary',
     },
     {
       label: 'Avg Readability',
       value: stats.avgReadability + '%',
       icon: EyeIcon,
-      bg: 'bg-gradient-to-br from-green-400 to-teal-500',
+      bg: 'bg-accent',
     },
     {
       label: 'Avg Clarity',
       value: stats.avgClarity + '%',
       icon: SparklesIcon,
-      bg: 'bg-gradient-to-br from-purple-500 to-pink-500',
+      bg: 'bg-success',
     },
   ];
 
