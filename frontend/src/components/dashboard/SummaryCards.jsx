@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import { getSubmissions } from '../../api/submissions.api';
 import LoadingSpinner from '../common/LoadingSpinner';
+import { 
+  DocumentTextIcon, 
+  EyeIcon, 
+  SparklesIcon 
+} from '@heroicons/react/outline';
 
 const SummaryCards = () => {
   const [stats, setStats] = useState({ total: 0, avgReadability: 0, avgClarity: 0 });
@@ -38,20 +43,41 @@ const SummaryCards = () => {
 
   if (loading) return <LoadingSpinner />;
 
+  const cards = [
+    {
+      label: 'Total Submissions',
+      value: stats.total,
+      icon: DocumentTextIcon,
+      bg: 'bg-gradient-to-br from-blue-500 to-indigo-600',
+    },
+    {
+      label: 'Avg Readability',
+      value: stats.avgReadability + '%',
+      icon: EyeIcon,
+      bg: 'bg-gradient-to-br from-green-400 to-teal-500',
+    },
+    {
+      label: 'Avg Clarity',
+      value: stats.avgClarity + '%',
+      icon: SparklesIcon,
+      bg: 'bg-gradient-to-br from-purple-500 to-pink-500',
+    },
+  ];
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <div className="bg-white p-4 rounded shadow">
-        <h3 className="text-sm text-gray-500">Total Submissions</h3>
-        <p className="text-2xl font-bold">{stats.total}</p>
-      </div>
-      <div className="bg-white p-4 rounded shadow">
-        <h3 className="text-sm text-gray-500">Avg Readability</h3>
-        <p className="text-2xl font-bold">{stats.avgReadability}%</p>
-      </div>
-      <div className="bg-white p-4 rounded shadow">
-        <h3 className="text-sm text-gray-500">Avg Clarity</h3>
-        <p className="text-2xl font-bold">{stats.avgClarity}%</p>
-      </div>
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {cards.map((card, idx) => (
+        <div
+          key={idx}
+          className={`${card.bg} rounded-lg shadow-lg p-6 text-white flex items-center justify-between`}
+        >
+          <div>
+            <p className="text-sm font-medium opacity-80">{card.label}</p>
+            <p className="text-3xl font-bold mt-1">{card.value}</p>
+          </div>
+          <card.icon className="h-12 w-12 opacity-50" />
+        </div>
+      ))}
     </div>
   );
 };
