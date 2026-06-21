@@ -17,4 +17,4 @@ process.on('SIGTERM', () => {
     logger.info('HTTP server closed');
     process.exit(0);
   });
-});
+});// Handle unhandled promise rejections
