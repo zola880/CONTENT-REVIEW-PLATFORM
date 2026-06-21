@@ -4,6 +4,13 @@ import { getSubmissionById, regenerateFeedback } from '../api/submissions.api';
 import FeedbackDisplay from '../components/submissions/FeedbackDisplay';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import ErrorMessage from '../components/common/ErrorMessage';
+import { 
+  ArrowLeftIcon, 
+  DocumentTextIcon, 
+  ChatBubbleLeftRightIcon,
+  ArrowPathIcon
+} from '@heroicons/react/24/outline';
+import { toast } from 'react-hot-toast';
 
 const SubmissionDetailPage = () => {
   const { id } = useParams();
@@ -34,7 +41,8 @@ const SubmissionDetailPage = () => {
     setRegenerating(true);
     try {
       await regenerateFeedback(id);
-      await fetchSubmission(); // refresh
+      toast.success('Feedback regenerated');
+      await fetchSubmission();
     } catch (error) {
       // handled by interceptor
     } finally {
@@ -46,37 +54,88 @@ const SubmissionDetailPage = () => {
   if (error) return <ErrorMessage message={error} />;
   if (!submission) return <ErrorMessage message="Submission not found" />;
 
+  // Format date
+  const formattedDate = new Date(submission.createdAt).toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      {/* Back Button */}
       <button
         onClick={() => navigate('/')}
-        className="mb-4 text-blue-600 hover:underline"
+        className="group inline-flex items-center text-sm text-text-muted hover:text-primary transition-colors duration-200 mb-6"
       >
-        ← Back to Dashboard
+        <ArrowLeftIcon className="h-4 w-4 mr-1 group-hover:-translate-x-0.5 transition-transform" />
+        Back to Dashboard
       </button>
-      <div className="bg-white p-6 rounded shadow">
-        <h1 className="text-2xl font-bold">{submission.title}</h1>
-        <div className="text-sm text-gray-500 mb-4">
-          <span className="mr-4">Category: {submission.category}</span>
-          <span>Created: {new Date(submission.createdAt).toLocaleString()}</span>
-        </div>
-        <div className="border-t pt-4">
-          <h2 className="text-lg font-semibold mb-2">Content</h2>
-          <p className="whitespace-pre-wrap">{submission.content}</p>
-        </div>
-        <div className="border-t pt-4 mt-4">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Feedback</h2>
-            <button
-              onClick={handleRegenerate}
-              disabled={regenerating}
-              className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 disabled:opacity-50 text-sm"
-            >
-              {regenerating ? 'Regenerating...' : 'Regenerate Feedback'}
-            </button>
+
+      {/* Header Card */}
+      <div className="bg-secondary rounded-2xl shadow-md border border-primary/10 p-6 md:p-8 mb-6">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-2xl md:text-3xl font-bold text-text break-words">
+              {submission.title}
+            </h1>
+            <div className="flex flex-wrap items-center gap-3 mt-2 text-sm text-text-muted">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent-dark">
+                {submission.category}
+              </span>
+              <span className="flex items-center">
+                <span className="w-1 h-1 bg-text-muted/30 rounded-full mx-1.5"></span>
+                Created {formattedDate}
+              </span>
+            </div>
           </div>
-          <FeedbackDisplay feedback={submission.feedback} />
         </div>
+      </div>
+
+      {/* Content Section */}
+      <div className="bg-secondary rounded-2xl shadow-md border border-primary/10 p-6 md:p-8 mb-6">
+        <div className="flex items-center space-x-2 mb-4">
+          <DocumentTextIcon className="h-5 w-5 text-primary" />
+          <h2 className="text-lg font-semibold text-text">Content</h2>
+        </div>
+        <div className="bg-primary/5 rounded-xl p-4 md:p-6 border border-primary/10">
+          <p className="text-text whitespace-pre-wrap leading-relaxed">
+            {submission.content}
+          </p>
+        </div>
+      </div>
+
+      {/* Feedback Section */}
+      <div className="bg-secondary rounded-2xl shadow-md border border-primary/10 p-6 md:p-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+          <div className="flex items-center space-x-2">
+            <ChatBubbleLeftRightIcon className="h-5 w-5 text-accent" />
+            <h2 className="text-lg font-semibold text-text">Feedback & Suggestions</h2>
+          </div>
+          <button
+            onClick={handleRegenerate}
+            disabled={regenerating}
+            className="inline-flex items-center px-4 py-2 bg-accent text-primary font-medium text-sm rounded-lg hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {regenerating ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 100 8v4a8 8 0 01-8-8z" />
+                </svg>
+                Regenerating...
+              </>
+            ) : (
+              <>
+                <ArrowPathIcon className="h-4 w-4 mr-1.5" />
+                Regenerate Feedback
+              </>
+            )}
+          </button>
+        </div>
+        <FeedbackDisplay feedback={submission.feedback} />
       </div>
     </div>
   );
