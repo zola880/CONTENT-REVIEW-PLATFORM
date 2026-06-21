@@ -4,7 +4,7 @@ import { createSubmission, previewFeedback } from '../api/submissions.api';
 import SubmissionForm from '../components/submissions/SubmissionForm';
 import FeedbackDisplay from '../components/submissions/FeedbackDisplay';
 import { toast } from 'react-hot-toast';
-import { DocumentAddIcon } from '@heroicons/react/24/outline'; // or PlusIcon
+import { DocumentPlusIcon } from '@heroicons/react/24/outline'; // ✅ correct import
 
 const NewSubmissionPage = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const NewSubmissionPage = () => {
       {/* Header */}
       <div className="flex items-center space-x-3 mb-6">
         <div className="p-2 bg-accent/10 rounded-lg">
-          <DocumentAddIcon className="h-8 w-8 text-accent" />
+          <DocumentPlusIcon className="h-8 w-8 text-accent" />
         </div>
         <div>
           <h1 className="text-2xl font-bold text-text">Create New Submission</h1>
