@@ -150,3 +150,15 @@ exports.deleteSubmission = async (req, res, next) => {
     next(error);
   }
 };
+exports.deleteAllSubmissions = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const result = await Submission.deleteMany({ user: userId });
+    res.status(200).json(ApiResponse.success(
+      { deletedCount: result.deletedCount },
+      'All submissions deleted successfully'
+    ));
+  } catch (error) {
+    next(error);
+  }
+};
