@@ -3,7 +3,11 @@ const FeedbackFactory = require('../services/feedback/feedback.factory');
 const { ApiResponse } = require('../utils/ApiResponse');
 const AppError = require('../utils/AppError');
 
-// Get all submissions for the authenticated user with pagination
+// ==================== GET Endpoints ====================
+
+/**
+ * Get all submissions for the authenticated user with pagination
+ */
 exports.getSubmissions = async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -26,7 +30,9 @@ exports.getSubmissions = async (req, res, next) => {
   }
 };
 
-// Get a single submission by ID (check ownership)
+/**
+ * Get a single submission by ID (check ownership)
+ */
 exports.getSubmissionById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -41,7 +47,11 @@ exports.getSubmissionById = async (req, res, next) => {
   }
 };
 
-// Create a new submission with feedback
+// ==================== POST / CREATE Endpoints ====================
+
+/**
+ * Create a new submission with feedback
+ */
 exports.createSubmission = async (req, res, next) => {
   try {
     const { title, content, category } = req.body;
@@ -65,7 +75,27 @@ exports.createSubmission = async (req, res, next) => {
   }
 };
 
-// Regenerate feedback for an existing submission
+/**
+ * Generate feedback preview without saving the submission
+ */
+exports.previewFeedback = async (req, res, next) => {
+  try {
+    const { content, category } = req.body;
+    if (!content || !category) {
+      throw new AppError('Content and category are required', 400);
+    }
+
+    const feedbackService = FeedbackFactory.getService();
+    const feedback = await feedbackService.generateFeedback(content, category);
+    res.status(200).json(ApiResponse.success({ feedback }, 'Feedback preview generated'));
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Regenerate feedback for an existing submission
+ */
 exports.regenerateFeedback = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -89,26 +119,12 @@ exports.regenerateFeedback = async (req, res, next) => {
     next(error);
   }
 };
-// controllers/submissionController.js
 
-// ... existing code ...
+// ==================== PATCH / UPDATE Endpoints ====================
 
-exports.previewFeedback = async (req, res, next) => {
-  try {
-    const { content, category } = req.body;
-    if (!content || !category) {
-      throw new AppError('Content and category are required', 400);
-    }
-
-    const feedbackService = FeedbackFactory.getService();
-    const feedback = await feedbackService.generateFeedback(content, category);
-    res.status(200).json(ApiResponse.success({ feedback }, 'Feedback preview generated'));
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Update submission (rename title)
+/**
+ * Update submission title (rename)
+ */
 exports.updateSubmission = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -133,7 +149,11 @@ exports.updateSubmission = async (req, res, next) => {
   }
 };
 
-// Delete submission
+// ==================== DELETE Endpoints ====================
+
+/**
+ * Delete a single submission
+ */
 exports.deleteSubmission = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -150,6 +170,10 @@ exports.deleteSubmission = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * Delete all submissions for the authenticated user
+ */
 exports.deleteAllSubmissions = async (req, res, next) => {
   try {
     const userId = req.user.id;
