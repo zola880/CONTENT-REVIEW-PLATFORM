@@ -9,19 +9,34 @@ const schema = yup.object({
   category: yup.string().oneOf(CATEGORIES).required(),
 });
 
-const SubmissionForm = ({ onSubmit, isLoading, onPreview, isPreviewing, initialData = {} }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+const SubmissionForm = ({ 
+  onSave,          // called with form data to save
+  onPreview,       // called with form data for preview
+  isSaving, 
+  isPreviewing,
+  initialData = {} 
+}) => {
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
     defaultValues: initialData,
   });
 
+  // After successful save, we can reset the form from parent
+  const handleSave = (data) => {
+    onSave(data, reset);
+  };
+
+  const handlePreview = (data) => {
+    onPreview(data);
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form className="space-y-4">
       <div>
         <label className="block text-sm font-medium text-gray-700">Title</label>
         <input
           {...register('title')}
-          className="mt-1 w-full border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+          className="mt-1 w-full border rounded px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500"
         />
         {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
       </div>
@@ -30,7 +45,7 @@ const SubmissionForm = ({ onSubmit, isLoading, onPreview, isPreviewing, initialD
         <textarea
           {...register('content')}
           rows="6"
-          className="mt-1 w-full border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+          className="mt-1 w-full border rounded px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500"
         />
         {errors.content && <p className="text-red-500 text-sm">{errors.content.message}</p>}
       </div>
@@ -38,7 +53,7 @@ const SubmissionForm = ({ onSubmit, isLoading, onPreview, isPreviewing, initialD
         <label className="block text-sm font-medium text-gray-700">Category</label>
         <select
           {...register('category')}
-          className="mt-1 w-full border rounded px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+          className="mt-1 w-full border rounded px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500"
         >
           <option value="">Select a category</option>
           {CATEGORIES.map((cat) => (
@@ -49,17 +64,18 @@ const SubmissionForm = ({ onSubmit, isLoading, onPreview, isPreviewing, initialD
       </div>
       <div className="flex gap-2">
         <button
-          type="submit"
-          disabled={isLoading || isPreviewing}
-          className="flex-1 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+          type="button"
+          onClick={handleSubmit(handleSave)}
+          disabled={isSaving || isPreviewing}
+          className="flex-1 bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 disabled:opacity-50"
         >
-          {isLoading ? 'Submitting...' : 'Submit'}
+          {isSaving ? 'Saving...' : 'New Submission'}
         </button>
         {onPreview && (
           <button
             type="button"
-            onClick={handleSubmit(onPreview)}
-            disabled={isPreviewing || isLoading}
+            onClick={handleSubmit(handlePreview)}
+            disabled={isPreviewing || isSaving}
             className="flex-1 bg-gray-600 text-white py-2 rounded hover:bg-gray-700 disabled:opacity-50"
           >
             {isPreviewing ? 'Generating...' : 'Preview Feedback'}
