@@ -8,7 +8,7 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import NewSubmissionPage from './pages/NewSubmissionPage';
 import SubmissionDetailPage from './pages/SubmissionDetailPage';
-import AccountSettingsPage from './pages/AccountSettingsPage'; // ✅ import
+import AccountSettingsPage from './pages/AccountSettingsPage'; // import
 
 
 function App() {

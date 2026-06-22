@@ -7,4 +7,3 @@ const logger = {
 };
 
 module.exports = logger;
-// Simple logger utility for the content review platform backend. Provides methods for logging informational messages, errors, warnings, and debug information with timestamps. In a production environment, consider using a more robust logging library like Winston or Pino for better performance and features such as log rotation and structured logging.

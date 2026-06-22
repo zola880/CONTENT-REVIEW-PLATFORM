@@ -47,7 +47,7 @@ exports.getSubmissionById = async (req, res, next) => {
   }
 };
 
-// ==================== POST / CREATE Endpoints ====================
+
 
 /**
  * Create a new submission with feedback
@@ -149,7 +149,7 @@ exports.updateSubmission = async (req, res, next) => {
   }
 };
 
-// ==================== DELETE Endpoints ====================
+// DELETE Endpoints 
 
 /**
  * Delete a single submission
