@@ -15,8 +15,9 @@ const app = express();
 // Allow specific origins for production, fallback to all for development
 const allowedOrigins = [
   'http://localhost:3000',      // local Vite dev
-  'http://localhost:5000',      // local backend (if needed)
-  process.env.FRONTEND_URL,     // e.g., https://content-review.vercel.app
+  'http://localhost:5000',
+  'https://task-managemet-six.vercel.app/login',    // local backend 
+  process.env.FRONTEND_URL,     
 ].filter(Boolean); // remove undefined
 
 const corsOptions = {

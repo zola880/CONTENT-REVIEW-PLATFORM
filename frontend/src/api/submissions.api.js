@@ -11,7 +11,6 @@ export const regenerateFeedback = (id) =>
   apiClient.post(`/submissions/${id}/regenerate-feedback`);
 export const deleteAllSubmissions = () => apiClient.delete('/submissions/all');
 
-// ✅ NEW – preview feedback without saving
 export const previewFeedback = (data) =>
   apiClient.post('/submissions/preview-feedback', data);
 export const deleteSubmission = (id) => apiClient.delete(`/submissions/${id}`);

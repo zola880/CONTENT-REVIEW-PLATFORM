@@ -55,7 +55,7 @@ class GroqFeedbackService extends BaseFeedbackService {
       const response = await axios.post(
         groqApiUrl,
         {
-          // ✅ UPDATED TO SUPPORTED MODEL
+          // UPDATED TO SUPPORTED MODEL
           model: 'llama-3.3-70b-versatile',
           messages: [
             { role: 'system', content: systemPrompt },

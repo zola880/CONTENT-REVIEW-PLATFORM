@@ -3,7 +3,7 @@ const FeedbackFactory = require('../services/feedback/feedback.factory');
 const { ApiResponse } = require('../utils/ApiResponse');
 const AppError = require('../utils/AppError');
 
-// ==================== GET Endpoints ====================
+
 
 /**
  * Get all submissions for the authenticated user with pagination
@@ -120,7 +120,7 @@ exports.regenerateFeedback = async (req, res, next) => {
   }
 };
 
-// ==================== PATCH / UPDATE Endpoints ====================
+
 
 /**
  * Update submission title (rename)

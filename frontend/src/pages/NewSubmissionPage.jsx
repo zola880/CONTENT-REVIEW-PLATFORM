@@ -4,7 +4,7 @@ import { createSubmission, previewFeedback } from '../api/submissions.api';
 import SubmissionForm from '../components/submissions/SubmissionForm';
 import FeedbackDisplay from '../components/submissions/FeedbackDisplay';
 import { toast } from 'react-hot-toast';
-import { DocumentPlusIcon } from '@heroicons/react/24/outline'; // ✅ correct import
+import { DocumentPlusIcon } from '@heroicons/react/24/outline'; 
 
 const NewSubmissionPage = () => {
   const navigate = useNavigate();

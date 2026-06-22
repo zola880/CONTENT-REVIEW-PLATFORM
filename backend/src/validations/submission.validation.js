@@ -12,7 +12,7 @@ const createSubmissionSchema = Joi.object({
 const previewFeedbackSchema = Joi.object({
   content: Joi.string().min(10).max(10000).required(),
   category: Joi.string().valid(...CATEGORIES).required(),
-}).unknown(true); // ✅ allows additional fields (e.g., title) without error
+}).unknown(true); // allows additional fields (e.g., title) without error
 
 // Schema for updating a submission title (rename)
 const updateSubmissionSchema = Joi.object({
