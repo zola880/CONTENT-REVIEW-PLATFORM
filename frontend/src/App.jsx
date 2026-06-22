@@ -10,6 +10,7 @@ import NewSubmissionPage from './pages/NewSubmissionPage';
 import SubmissionDetailPage from './pages/SubmissionDetailPage';
 import AccountSettingsPage from './pages/AccountSettingsPage'; // ✅ import
 
+
 function App() {
   return (
     <AuthProvider>

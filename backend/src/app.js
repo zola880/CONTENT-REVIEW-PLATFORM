@@ -11,12 +11,40 @@ const { nodeEnv } = require('./config/env');
 
 const app = express();
 
-// Security middlewares
+// ----- CORS Configuration -----
+// Allow specific origins for production, fallback to all for development
+const allowedOrigins = [
+  'http://localhost:3000',      // local Vite dev
+  'http://localhost:5000',      // local backend (if needed)
+  process.env.FRONTEND_URL,     // e.g., https://content-review.vercel.app
+].filter(Boolean); // remove undefined
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, postman)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // allow cookies/auth headers
+  optionsSuccessStatus: 200,
+};
+
+// In development, we can be more permissive
+if (nodeEnv === 'development') {
+  app.use(cors());
+} else {
+  app.use(cors(corsOptions));
+}
+
+// ----- Security & Performance -----
 app.use(helmet());
-app.use(cors());
 app.use(compression());
 
-// Rate limiting on all requests (optional)
+// Rate limiting on all requests
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
@@ -45,4 +73,4 @@ app.use((req, res, next) => {
 // Global error handler
 app.use(errorHandler);
 
-module.exports = app;// Main application file for the content review platform backend. Sets up Express.js server with security middlewares, rate limiting, body parsing, and routes for authentication and submissions. Also includes a health check endpoint and centralized error handling.
+module.exports = app;
