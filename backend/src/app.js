@@ -11,67 +11,112 @@ const { nodeEnv } = require('./config/env');
 
 const app = express();
 
-// ----- CORS Configuration -----
-// Allow specific origins for production, fallback to all for development
+// ============================================
+// CORS CONFIGURATION
+// ============================================
+
+// Define allowed origins for production
 const allowedOrigins = [
-  'http://localhost:3000',      // local Vite dev
-  'http://localhost:5000',
-  'https://task-managemet-six.vercel.app/login',    // local backend 
-  process.env.FRONTEND_URL,     
-].filter(Boolean); // remove undefined
+  'http://localhost:3000',                    // Local Vite dev
+  'http://localhost:5000',                    // Local backend
+  'https://task-managemet-six.vercel.app',    // Production frontend (without /login)
+  process.env.FRONTEND_URL,                   // Fallback from environment variable
+].filter(Boolean); // Remove undefined values
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, postman)
-    if (!origin) return callback(null, true);
+    // Allow requests with no origin (like mobile apps, curl, Postman)
+    if (!origin) {
+      return callback(null, true);
+    }
+    
+    // Check if origin is allowed
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
+      console.warn(`CORS blocked origin: ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true, // allow cookies/auth headers
+  credentials: true, // Allow cookies/auth headers
   optionsSuccessStatus: 200,
 };
 
-// In development, we can be more permissive
+// Apply CORS middleware based on environment
 if (nodeEnv === 'development') {
+  // Development: permissive (allows any origin)
   app.use(cors());
+  console.log(' CORS: Development mode (all origins allowed)');
 } else {
+  // Production: restricted to allowedOrigins
   app.use(cors(corsOptions));
+  console.log(' CORS: Production mode (restricted origins)');
 }
 
-// ----- Security & Performance -----
+// ============================================
+// SECURITY & PERFORMANCE MIDDLEWARE
+// ============================================
+
+// Security headers
 app.use(helmet());
+
+// Response compression
 app.use(compression());
 
-// Rate limiting on all requests
+// ============================================
+// RATE LIMITING
+// ============================================
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 100, // Limit each IP to 100 requests per windowMs
   message: ApiResponse.error('Too many requests, please try again later.', 429),
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
+
+// Apply rate limiting to all requests
 app.use(limiter);
 
-// Body parser
+// ============================================
+// BODY PARSERS
+
+
+// Parse JSON bodies (limit: 10MB)
 app.use(express.json({ limit: '10mb' }));
+
+// Parse URL-encoded bodies (limit: 10MB)
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Health check endpoint
+// ============================================
+// HEALTH CHECK ENDPOINT
+
+
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok', environment: nodeEnv });
+  res.status(200).json({
+    status: 'ok',
+    environment: nodeEnv,
+    timestamp: new Date().toISOString(),
+  });
 });
 
-// Routes
+// ============================================
+// API ROUTES
+
+
+// Authentication routes (public)
 app.use('/api/v1/auth', authRoutes);
+
+// Submission routes (protected by JWT middleware inside routes)
 app.use('/api/v1/submissions', submissionRoutes);
 
-// 404 handler
+
+
 app.use((req, res, next) => {
   res.status(404).json(ApiResponse.error('Route not found', 404));
 });
 
-// Global error handler
+
 app.use(errorHandler);
 
 module.exports = app;
