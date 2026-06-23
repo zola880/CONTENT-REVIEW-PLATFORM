@@ -4,21 +4,40 @@ import { createSubmission, previewFeedback } from '../api/submissions.api';
 import SubmissionForm from '../components/submissions/SubmissionForm';
 import FeedbackDisplay from '../components/submissions/FeedbackDisplay';
 import { toast } from 'react-hot-toast';
-import { DocumentPlusIcon } from '@heroicons/react/24/outline'; 
+import { DocumentPlusIcon } from '@heroicons/react/24/outline';
 
 const NewSubmissionPage = () => {
   const navigate = useNavigate();
   const [preview, setPreview] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isPreviewing, setIsPreviewing] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null); // Store the selected file
 
-  const handleSave = async (data, resetForm) => {
+  // Handle saving (supports both text and file upload)
+  const handleSave = async (data, resetForm, file) => {
     setIsSaving(true);
     try {
-      await createSubmission(data);
+      let payload;
+      if (file) {
+        // File upload: create FormData
+        payload = new FormData();
+        payload.append('title', data.title);
+        payload.append('category', data.category);
+        payload.append('file', file); // 'file' matches the field name in Multer
+        // If content is provided (optional), we could also append it
+        if (data.content) {
+          payload.append('content', data.content);
+        }
+      } else {
+        // Text-only: send JSON
+        payload = data;
+      }
+
+      await createSubmission(payload);
       toast.success('Submission saved!');
-      resetForm();
+      resetForm(); // Clear the form
       setPreview(null);
+      setSelectedFile(null); // Clear file state
     } catch (error) {
       // handled by interceptor
     } finally {
@@ -26,7 +45,13 @@ const NewSubmissionPage = () => {
     }
   };
 
+  // Preview feedback (only for text input, not files)
   const handlePreview = async (data) => {
+    // Already guarded in SubmissionForm, but we keep a safety check
+    if (selectedFile) {
+      toast.error('Preview is only available for text input.');
+      return;
+    }
     setIsPreviewing(true);
     try {
       const response = await previewFeedback(data);
@@ -38,6 +63,10 @@ const NewSubmissionPage = () => {
     }
   };
 
+  const handleFileChange = (file) => {
+    setSelectedFile(file);
+  };
+
   return (
     <div className="max-w-4xl mx-auto">
       {/* Header */}
@@ -47,7 +76,7 @@ const NewSubmissionPage = () => {
         </div>
         <div>
           <h1 className="text-2xl font-bold text-text">Create New Submission</h1>
-          <p className="text-text-muted text-sm">Write your content and get instant AI feedback</p>
+          <p className="text-text-muted text-sm">Write your content or upload a file for analysis</p>
         </div>
       </div>
 
@@ -59,6 +88,8 @@ const NewSubmissionPage = () => {
             onPreview={handlePreview}
             isSaving={isSaving}
             isPreviewing={isPreviewing}
+            selectedFile={selectedFile}
+            onFileChange={handleFileChange}
           />
         </div>
 
