@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { CATEGORIES } from '../../utils/validators';
-import { FilePlus, X, File, Loader2 } from 'lucide-react';
+import { FilePlus, X, File, Loader2, Sparkles, Plus } from 'lucide-react';
 import { useRef, useState } from 'react';
 
 const baseSchema = yup.object({
@@ -12,9 +12,9 @@ const baseSchema = yup.object({
 });
 
 const SubmissionForm = ({
-  onSave,
+  onSaveAndNew,
   onPreview,
-  isSaving,
+  isSubmitting,
   isPreviewing,
   initialData = {},
   selectedFile = null,
@@ -63,20 +63,19 @@ const SubmissionForm = ({
 
   const isFileSelected = !!selectedFile;
 
-  const handleSave = (data) => {
+  // ✅ Save and reset for next entry
+  const handleSaveAndNew = (data) => {
     if (!isFileSelected && (!data.content || data.content.trim().length < 10)) {
       alert('Content is required when no file is uploaded and must be at least 10 characters.');
       return;
     }
-    onSave(data, reset, selectedFile);
+    onSaveAndNew(data, reset, selectedFile);
   };
 
+  // ✅ Preview – works for both text and files
   const handlePreview = (data) => {
-    if (isFileSelected) {
-      alert('Preview is only available for text input. Please save the submission to get feedback on files.');
-      return;
-    }
-    onPreview(data);
+    // Pass both data and file to parent
+    onPreview(data, selectedFile);
   };
 
   return (
@@ -199,47 +198,53 @@ const SubmissionForm = ({
         )}
       </div>
 
-      {/* Buttons */}
+      {/* ✅ Buttons – New Flow */}
       <div className="flex flex-col sm:flex-row gap-3 pt-2">
+        {/* Preview Feedback – works for both text and files */}
         <button
           type="button"
-          onClick={handleSubmit(handleSave)}
-          disabled={isSaving || isPreviewing}
+          onClick={handleSubmit(handlePreview)}
+          disabled={isPreviewing || isSubmitting}
+          className="flex-1 bg-accent text-white font-medium py-3 px-6 rounded-lg hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isPreviewing ? (
+            <span className="flex items-center justify-center">
+              <Loader2 className="animate-spin h-4 w-4 mr-2" />
+              Generating Preview...
+            </span>
+          ) : (
+            <span className="flex items-center justify-center">
+              <Sparkles className="h-4 w-4 mr-2" />
+              Preview Feedback
+            </span>
+          )}
+        </button>
+
+        {/* New Submission – saves and resets for next entry */}
+        <button
+          type="button"
+          onClick={handleSubmit(handleSaveAndNew)}
+          disabled={isSubmitting || isPreviewing}
           className="flex-1 bg-primary text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSaving ? (
+          {isSubmitting ? (
             <span className="flex items-center justify-center">
               <Loader2 className="animate-spin h-4 w-4 mr-2" />
               Saving...
             </span>
           ) : (
-            'Save Submission'
+            <span className="flex items-center justify-center">
+              <Plus className="h-4 w-4 mr-2" />
+              New Submission
+            </span>
           )}
         </button>
-
-        {onPreview && (
-          <button
-            type="button"
-            onClick={handleSubmit(handlePreview)}
-            disabled={isPreviewing || isSaving}
-            className="flex-1 bg-accent text-white font-medium py-3 px-6 rounded-lg hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isPreviewing ? (
-              <span className="flex items-center justify-center">
-                <Loader2 className="animate-spin h-4 w-4 mr-2" />
-                Generating...
-              </span>
-            ) : (
-              'Preview Feedback'
-            )}
-          </button>
-        )}
       </div>
 
       <p className="text-xs text-text-muted text-center mt-2">
         {isFileSelected
-          ? 'File will be uploaded and analyzed. Click "Save Submission" to process.'
-          : 'Click "Preview Feedback" to get AI suggestions without saving.'}
+          ? 'Click "Preview Feedback" to analyze your file, then "New Submission" to save and create another.'
+          : 'Click "Preview Feedback" to get AI suggestions, then "New Submission" to save and continue.'}
       </p>
     </form>
   );

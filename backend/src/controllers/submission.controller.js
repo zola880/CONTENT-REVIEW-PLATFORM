@@ -2,7 +2,7 @@ const Submission = require('../models/Submission.model');
 const FeedbackFactory = require('../services/feedback/feedback.factory');
 const { ApiResponse } = require('../utils/ApiResponse');
 const AppError = require('../utils/AppError');
-const { extractTextFromFile } = require('../utils/fileParser'); // NEW: file parser utility
+const { extractTextFromFile } = require('../utils/fileParser');
 
 // ==================== GET Endpoints ====================
 
@@ -64,7 +64,6 @@ exports.createSubmission = async (req, res, next) => {
     if (req.file) {
       try {
         const extractedText = await extractTextFromFile(req.file);
-        // If content was also provided, maybe we want to append? We'll replace.
         content = extractedText;
       } catch (error) {
         throw new AppError(`Failed to extract text from file: ${error.message}`, 400);
@@ -92,10 +91,10 @@ exports.createSubmission = async (req, res, next) => {
     // If file was uploaded, add file metadata
     if (req.file) {
       submissionData.fileInfo = {
-        filename: req.file.filename,                // Generated filename
-        originalName: req.file.originalname,        // User's original name
-        fileSize: req.file.size,                    // Size in bytes
-        fileType: req.file.mimetype,                // MIME type
+        filename: req.file.filename,
+        originalName: req.file.originalname,
+        fileSize: req.file.size,
+        fileType: req.file.mimetype,
         encoding: req.file.encoding || 'utf-8',
       };
     }
@@ -110,11 +109,23 @@ exports.createSubmission = async (req, res, next) => {
 
 /**
  * Generate feedback preview without saving the submission
- * (Only for text input – files are not supported in preview)
+ * ✅ NOW SUPPORTS BOTH TEXT AND FILE UPLOADS
  */
 exports.previewFeedback = async (req, res, next) => {
   try {
-    const { content, category } = req.body;
+    let content = req.body.content;
+    const { category } = req.body;
+
+    // If a file was uploaded, extract text from it
+    if (req.file) {
+      try {
+        content = await extractTextFromFile(req.file);
+      } catch (error) {
+        throw new AppError(`Failed to extract text from file: ${error.message}`, 400);
+      }
+    }
+
+    // Validate content and category
     if (!content || !category) {
       throw new AppError('Content and category are required', 400);
     }

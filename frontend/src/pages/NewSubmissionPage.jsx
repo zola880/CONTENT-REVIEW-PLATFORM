@@ -9,12 +9,13 @@ import { FilePlus } from 'lucide-react';
 const NewSubmissionPage = () => {
   const navigate = useNavigate();
   const [preview, setPreview] = useState(null);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPreviewing, setIsPreviewing] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleSave = async (data, resetForm, file) => {
-    setIsSaving(true);
+  // ✅ Save submission and clear form for next entry (stays on page)
+  const handleSaveAndNew = async (data, resetForm, file) => {
+    setIsSubmitting(true);
     try {
       let payload;
       if (file) {
@@ -30,25 +31,44 @@ const NewSubmissionPage = () => {
       }
 
       await createSubmission(payload);
-      toast.success('Submission saved!');
+      toast.success('Submission saved! Ready for next entry.');
       resetForm();
       setPreview(null);
       setSelectedFile(null);
+      // ✅ Stay on the page – ready for next submission
     } catch (error) {
       // handled by interceptor
     } finally {
-      setIsSaving(false);
+      setIsSubmitting(false);
     }
   };
 
-  const handlePreview = async (data) => {
-    if (selectedFile) {
-      toast.error('Preview is only available for text input.');
-      return;
-    }
+  // ✅ Preview feedback – works for BOTH text and files
+  const handlePreview = async (data, file) => {
     setIsPreviewing(true);
     try {
-      const response = await previewFeedback(data);
+      let payload;
+      const headers = {};
+
+      if (file) {
+        // File upload: use FormData
+        payload = new FormData();
+        payload.append('category', data.category);
+        payload.append('file', file);
+        if (data.content) {
+          payload.append('content', data.content);
+        }
+        // Axios will set Content-Type: multipart/form-data automatically
+      } else {
+        // Text-only: send JSON
+        payload = {
+          content: data.content,
+          category: data.category,
+        };
+        headers['Content-Type'] = 'application/json';
+      }
+
+      const response = await previewFeedback(payload, headers);
       setPreview(response.data.feedback);
     } catch (error) {
       // handled by interceptor
@@ -78,16 +98,16 @@ const NewSubmissionPage = () => {
       <div className="bg-secondary rounded-xl shadow-md border border-primary/10 overflow-hidden">
         <div className="p-6 md:p-8">
           <SubmissionForm
-            onSave={handleSave}
+            onSaveAndNew={handleSaveAndNew}
             onPreview={handlePreview}
-            isSaving={isSaving}
+            isSubmitting={isSubmitting}
             isPreviewing={isPreviewing}
             selectedFile={selectedFile}
             onFileChange={handleFileChange}
           />
         </div>
 
-        {/* Preview Feedback Section (below form) */}
+        {/* Preview Feedback Section */}
         {preview && (
           <div className="border-t border-primary/10 bg-primary/5 px-6 md:px-8 py-6">
             <h2 className="text-lg font-semibold text-text mb-4 flex items-center">
