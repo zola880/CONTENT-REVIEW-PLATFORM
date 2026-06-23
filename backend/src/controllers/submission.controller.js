@@ -2,8 +2,9 @@ const Submission = require('../models/Submission.model');
 const FeedbackFactory = require('../services/feedback/feedback.factory');
 const { ApiResponse } = require('../utils/ApiResponse');
 const AppError = require('../utils/AppError');
+const { extractTextFromFile } = require('../utils/fileParser'); // NEW: file parser utility
 
-
+// ==================== GET Endpoints ====================
 
 /**
  * Get all submissions for the authenticated user with pagination
@@ -47,27 +48,59 @@ exports.getSubmissionById = async (req, res, next) => {
   }
 };
 
-
+// ==================== POST / CREATE Endpoints ====================
 
 /**
  * Create a new submission with feedback
+ * Supports both text input and file upload
  */
 exports.createSubmission = async (req, res, next) => {
   try {
-    const { title, content, category } = req.body;
     const userId = req.user.id;
+    const { title, category } = req.body;
+    let content = req.body.content;
+
+    // If a file was uploaded, extract text from it
+    if (req.file) {
+      try {
+        const extractedText = await extractTextFromFile(req.file);
+        // If content was also provided, maybe we want to append? We'll replace.
+        content = extractedText;
+      } catch (error) {
+        throw new AppError(`Failed to extract text from file: ${error.message}`, 400);
+      }
+    }
+
+    // Validate required fields
+    if (!title || !content || !category) {
+      throw new AppError('Title, content, and category are required', 400);
+    }
 
     // Generate feedback using the factory
     const feedbackService = FeedbackFactory.getService();
     const feedback = await feedbackService.generateFeedback(content, category);
 
-    const submission = await Submission.create({
+    // Build submission data
+    const submissionData = {
       user: userId,
       title,
       content,
       category,
       feedback,
-    });
+    };
+
+    // If file was uploaded, add file metadata
+    if (req.file) {
+      submissionData.fileInfo = {
+        filename: req.file.filename,                // Generated filename
+        originalName: req.file.originalname,        // User's original name
+        fileSize: req.file.size,                    // Size in bytes
+        fileType: req.file.mimetype,                // MIME type
+        encoding: req.file.encoding || 'utf-8',
+      };
+    }
+
+    const submission = await Submission.create(submissionData);
 
     res.status(201).json(ApiResponse.success(submission, 'Submission created successfully', 201));
   } catch (error) {
@@ -77,6 +110,7 @@ exports.createSubmission = async (req, res, next) => {
 
 /**
  * Generate feedback preview without saving the submission
+ * (Only for text input – files are not supported in preview)
  */
 exports.previewFeedback = async (req, res, next) => {
   try {
@@ -120,7 +154,7 @@ exports.regenerateFeedback = async (req, res, next) => {
   }
 };
 
-
+// ==================== PATCH / UPDATE Endpoints ====================
 
 /**
  * Update submission title (rename)
@@ -149,7 +183,7 @@ exports.updateSubmission = async (req, res, next) => {
   }
 };
 
-// DELETE Endpoints 
+// ==================== DELETE Endpoints ====================
 
 /**
  * Delete a single submission
