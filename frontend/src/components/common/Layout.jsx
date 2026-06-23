@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Menu, X } from 'lucide-react';
 import Sidebar from './Sidebar';
 
 const Layout = ({ children }) => {
@@ -35,9 +35,9 @@ const Layout = ({ children }) => {
         <div className="md:hidden bg-primary px-4 py-3 flex items-center justify-between">
           <button onClick={toggleSidebar} className="text-white">
             {sidebarOpen ? (
-              <XMarkIcon className="h-6 w-6" />
+              <X className="h-6 w-6" />
             ) : (
-              <Bars3Icon className="h-6 w-6" />
+              <Menu className="h-6 w-6" />
             )}
           </button>
           <span className="text-white font-bold text-lg">Content Review</span>

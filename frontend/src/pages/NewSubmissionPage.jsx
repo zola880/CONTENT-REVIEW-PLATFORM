@@ -4,40 +4,36 @@ import { createSubmission, previewFeedback } from '../api/submissions.api';
 import SubmissionForm from '../components/submissions/SubmissionForm';
 import FeedbackDisplay from '../components/submissions/FeedbackDisplay';
 import { toast } from 'react-hot-toast';
-import { DocumentPlusIcon } from '@heroicons/react/24/outline';
+import { FilePlus } from 'lucide-react';
 
 const NewSubmissionPage = () => {
   const navigate = useNavigate();
   const [preview, setPreview] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isPreviewing, setIsPreviewing] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null); // Store the selected file
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  // Handle saving (supports both text and file upload)
   const handleSave = async (data, resetForm, file) => {
     setIsSaving(true);
     try {
       let payload;
       if (file) {
-        // File upload: create FormData
         payload = new FormData();
         payload.append('title', data.title);
         payload.append('category', data.category);
-        payload.append('file', file); // 'file' matches the field name in Multer
-        // If content is provided (optional), we could also append it
+        payload.append('file', file);
         if (data.content) {
           payload.append('content', data.content);
         }
       } else {
-        // Text-only: send JSON
         payload = data;
       }
 
       await createSubmission(payload);
       toast.success('Submission saved!');
-      resetForm(); // Clear the form
+      resetForm();
       setPreview(null);
-      setSelectedFile(null); // Clear file state
+      setSelectedFile(null);
     } catch (error) {
       // handled by interceptor
     } finally {
@@ -45,9 +41,7 @@ const NewSubmissionPage = () => {
     }
   };
 
-  // Preview feedback (only for text input, not files)
   const handlePreview = async (data) => {
-    // Already guarded in SubmissionForm, but we keep a safety check
     if (selectedFile) {
       toast.error('Preview is only available for text input.');
       return;
@@ -72,7 +66,7 @@ const NewSubmissionPage = () => {
       {/* Header */}
       <div className="flex items-center space-x-3 mb-6">
         <div className="p-2 bg-accent/10 rounded-lg">
-          <DocumentPlusIcon className="h-8 w-8 text-accent" />
+          <FilePlus className="h-8 w-8 text-accent" />
         </div>
         <div>
           <h1 className="text-2xl font-bold text-text">Create New Submission</h1>

@@ -3,14 +3,15 @@ import { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { getSubmissions, deleteSubmission, updateSubmission } from '../../api/submissions.api';
 import { toast } from 'react-hot-toast';
-import {
-  HomeIcon,
-  PlusIcon,
-  ArrowRightOnRectangleIcon,
-  EllipsisVerticalIcon,
-  PencilIcon,
-  TrashIcon,
-} from '@heroicons/react/24/outline';
+import { 
+  Home, 
+  Plus, 
+  LogOut,
+  MoreVertical,
+  Pencil,
+  Trash2,
+  FileText
+} from 'lucide-react';
 
 const Sidebar = ({ closeMobile }) => {
   const { user, logout } = useAuth();
@@ -103,8 +104,8 @@ const Sidebar = ({ closeMobile }) => {
   };
 
   const navigation = [
-    { name: 'Dashboard', href: '/', icon: HomeIcon },
-    { name: 'New Submission', href: '/submissions/new', icon: PlusIcon },
+    { name: 'Dashboard', href: '/', icon: Home },
+    { name: 'New Submission', href: '/submissions/new', icon: Plus },
   ];
 
   return (
@@ -113,9 +114,7 @@ const Sidebar = ({ closeMobile }) => {
         {/* Logo */}
         <div className="flex items-center justify-center h-16 border-b border-white/10">
           <Link to="/" className="flex items-center space-x-2">
-            <svg className="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
+            <FileText className="h-8 w-8 text-accent" />
             <span className="text-xl font-bold">Content Review</span>
           </Link>
         </div>
@@ -195,7 +194,7 @@ const Sidebar = ({ closeMobile }) => {
                       }}
                       className="text-white/40 hover:text-white focus:outline-none ml-2"
                     >
-                      <EllipsisVerticalIcon className="h-5 w-5" />
+                      <MoreVertical className="h-5 w-5" />
                     </button>
                   </div>
                   {dropdownOpen === sub._id && (
@@ -208,14 +207,14 @@ const Sidebar = ({ closeMobile }) => {
                           onClick={() => openRenameModal(sub)}
                           className="flex items-center w-full px-4 py-2 text-sm text-text hover:bg-primary/5"
                         >
-                          <PencilIcon className="h-4 w-4 mr-2" />
+                          <Pencil className="h-4 w-4 mr-2" />
                           Rename
                         </button>
                         <button
                           onClick={() => handleDelete(sub._id)}
                           className="flex items-center w-full px-4 py-2 text-sm text-error hover:bg-primary/5"
                         >
-                          <TrashIcon className="h-4 w-4 mr-2" />
+                          <Trash2 className="h-4 w-4 mr-2" />
                           Delete
                         </button>
                       </div>
@@ -227,7 +226,7 @@ const Sidebar = ({ closeMobile }) => {
           )}
         </div>
 
-        {/* Bottom Section – User & Logout – now with Link to /account */}
+        {/* Bottom Section – User & Logout */}
         <div className="border-t border-white/10 px-4 py-4">
           <Link
             to="/account"
@@ -252,7 +251,7 @@ const Sidebar = ({ closeMobile }) => {
             onClick={handleLogout}
             className="flex items-center w-full px-4 py-2 text-sm text-white/80 hover:bg-white/10 rounded-lg transition duration-150"
           >
-            <ArrowRightOnRectangleIcon className="h-5 w-5 mr-3" />
+            <LogOut className="h-5 w-5 mr-3" />
             Logout
           </button>
         </div>

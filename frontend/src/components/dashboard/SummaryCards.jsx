@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getSubmissions } from '../../api/submissions.api';
 import LoadingSpinner from '../common/LoadingSpinner';
-import { 
-  DocumentTextIcon, 
-  EyeIcon, 
-  SparklesIcon 
-} from '@heroicons/react/24/outline';
+import { FileText, Eye, Sparkles } from 'lucide-react';
 
 const SummaryCards = () => {
   const [stats, setStats] = useState({ total: 0, avgReadability: 0, avgClarity: 0 });
@@ -47,20 +43,26 @@ const SummaryCards = () => {
     {
       label: 'Total Submissions',
       value: stats.total,
-      icon: DocumentTextIcon,
+      icon: FileText,
       bg: 'bg-primary',
+      iconColor: 'text-white/40',
+      textColor: 'text-white',
     },
     {
       label: 'Avg Readability',
       value: stats.avgReadability + '%',
-      icon: EyeIcon,
+      icon: Eye,
       bg: 'bg-accent',
+      iconColor: 'text-white/40',
+      textColor: 'text-white',
     },
     {
       label: 'Avg Clarity',
       value: stats.avgClarity + '%',
-      icon: SparklesIcon,
+      icon: Sparkles,
       bg: 'bg-success',
+      iconColor: 'text-white/40',
+      textColor: 'text-white',
     },
   ];
 
@@ -69,13 +71,13 @@ const SummaryCards = () => {
       {cards.map((card, idx) => (
         <div
           key={idx}
-          className={`${card.bg} rounded-lg shadow-lg p-6 text-white flex items-center justify-between`}
+          className={`${card.bg} rounded-xl shadow-lg p-6 text-white flex items-center justify-between hover:shadow-xl transition-shadow duration-200`}
         >
           <div>
             <p className="text-sm font-medium opacity-80">{card.label}</p>
             <p className="text-3xl font-bold mt-1">{card.value}</p>
           </div>
-          <card.icon className="h-12 w-12 opacity-50" />
+          <card.icon className={`h-12 w-12 opacity-50 ${card.iconColor}`} />
         </div>
       ))}
     </div>

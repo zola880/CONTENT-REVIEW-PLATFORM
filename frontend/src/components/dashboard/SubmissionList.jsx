@@ -6,11 +6,7 @@ import EmptyState from '../common/EmptyState';
 import ErrorMessage from '../common/ErrorMessage';
 import { deleteSubmission, updateSubmission } from '../../api/submissions.api';
 import { toast } from 'react-hot-toast';
-import { 
-  EllipsisVerticalIcon, 
-  PencilIcon, 
-  TrashIcon 
-} from '@heroicons/react/24/outline';
+import { MoreVertical, Pencil, Trash2 } from 'lucide-react';
 
 const SubmissionList = () => {
   const [page, setPage] = useState(1);
@@ -103,7 +99,7 @@ const SubmissionList = () => {
                           onClick={() => setDropdownOpen(dropdownOpen === sub._id ? null : sub._id)}
                           className="text-text-muted hover:text-text focus:outline-none"
                         >
-                          <EllipsisVerticalIcon className="h-5 w-5" />
+                          <MoreVertical className="h-5 w-5" />
                         </button>
                         {dropdownOpen === sub._id && (
                           <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-secondary ring-1 ring-primary/10 z-10">
@@ -112,14 +108,14 @@ const SubmissionList = () => {
                                 onClick={() => openRenameModal(sub)}
                                 className="flex items-center w-full px-4 py-2 text-sm text-text hover:bg-primary/5"
                               >
-                                <PencilIcon className="h-4 w-4 mr-2" />
+                                <Pencil className="h-4 w-4 mr-2" />
                                 Rename
                               </button>
                               <button
                                 onClick={() => handleDelete(sub._id)}
                                 className="flex items-center w-full px-4 py-2 text-sm text-error hover:bg-primary/5"
                               >
-                                <TrashIcon className="h-4 w-4 mr-2" />
+                                <Trash2 className="h-4 w-4 mr-2" />
                                 Delete
                               </button>
                             </div>

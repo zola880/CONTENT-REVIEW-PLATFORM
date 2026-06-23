@@ -3,7 +3,7 @@ import { deleteAllSubmissions } from '../api/submissions.api';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { UserIcon, CogIcon, TrashIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
+import { Settings, Trash2, ArrowLeft, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const AccountSettingsPage = () => {
@@ -33,7 +33,7 @@ const AccountSettingsPage = () => {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
           <div className="p-2 bg-accent/10 rounded-lg">
-            <CogIcon className="h-8 w-8 text-accent" />
+            <Settings className="h-8 w-8 text-accent" />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-text">Account Settings</h1>
@@ -44,7 +44,7 @@ const AccountSettingsPage = () => {
           to="/"
           className="inline-flex items-center text-sm text-primary hover:text-primary-light transition"
         >
-          <ArrowLeftIcon className="h-4 w-4 mr-1" />
+          <ArrowLeft className="h-4 w-4 mr-1" />
           Dashboard
         </Link>
       </div>
@@ -79,7 +79,6 @@ const AccountSettingsPage = () => {
             <div>
               <label className="block text-xs font-medium text-text-light uppercase tracking-wider">Total Submissions</label>
               <p className="mt-1 text-text font-medium">—</p>
-              {/* You can fetch total count from stats if needed */}
             </div>
           </div>
         </div>
@@ -89,8 +88,8 @@ const AccountSettingsPage = () => {
       <div className="bg-secondary rounded-xl shadow-md border border-error/30 overflow-hidden">
         <div className="p-6 md:p-8">
           <div className="flex items-center space-x-2 mb-2">
-            <TrashIcon className="h-5 w-5 text-error" />
-            <h3 className="text-lg font-semibold text-error"></h3>
+            <Trash2 className="h-5 w-5 text-error" />
+            <h3 className="text-lg font-semibold text-error">Danger Zone</h3>
           </div>
           <p className="text-sm text-text-light mb-4">
             Permanently delete all your submissions and associated feedback. This action <strong>cannot</strong> be undone.

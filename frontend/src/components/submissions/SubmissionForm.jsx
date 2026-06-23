@@ -2,11 +2,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { CATEGORIES } from '../../utils/validators';
-import { DocumentPlusIcon, XMarkIcon, DocumentIcon } from '@heroicons/react/24/outline';
+import { FilePlus, X, File, Loader2 } from 'lucide-react';
 import { useRef, useState } from 'react';
 
-// Conditional schema: content is required only if no file is selected
-// We'll handle this dynamically in the component
 const baseSchema = yup.object({
   title: yup.string().min(3).max(100).required(),
   content: yup.string().min(0).max(10000).optional(),
@@ -22,7 +20,7 @@ const SubmissionForm = ({
   selectedFile = null,
   onFileChange = () => {},
 }) => {
-  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm({
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: yupResolver(baseSchema),
     defaultValues: initialData,
   });
@@ -30,7 +28,6 @@ const SubmissionForm = ({
   const fileInputRef = useRef(null);
   const [fileError, setFileError] = useState(null);
 
-  // Handle file selection
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
     if (!file) {
@@ -39,14 +36,12 @@ const SubmissionForm = ({
       return;
     }
 
-    // Validate file size (5MB)
     if (file.size > 5 * 1024 * 1024) {
       setFileError('File size must be less than 5MB');
       onFileChange(null);
       return;
     }
 
-    // Validate file type (based on extension)
     const allowedExtensions = ['.txt', '.md', '.csv', '.json', '.pdf', '.doc', '.docx'];
     const ext = file.name.split('.').pop().toLowerCase();
     if (!allowedExtensions.includes('.' + ext)) {
@@ -66,22 +61,17 @@ const SubmissionForm = ({
     }
   };
 
-  // Determine if content is required based on file presence
   const isFileSelected = !!selectedFile;
 
-  // Prepare save handler
   const handleSave = (data) => {
-    // If no file selected, content must be provided
     if (!isFileSelected && (!data.content || data.content.trim().length < 10)) {
       alert('Content is required when no file is uploaded and must be at least 10 characters.');
       return;
     }
-    // We'll pass the data along with file info
     onSave(data, reset, selectedFile);
   };
 
   const handlePreview = (data) => {
-    // Preview only supports text content (no file)
     if (isFileSelected) {
       alert('Preview is only available for text input. Please save the submission to get feedback on files.');
       return;
@@ -117,7 +107,6 @@ const SubmissionForm = ({
           </span>
         </div>
 
-        {/* File Upload Area */}
         <div
           className={`relative border-2 border-dashed rounded-lg p-4 transition ${
             isFileSelected
@@ -126,7 +115,6 @@ const SubmissionForm = ({
           }`}
         >
           <div className="flex items-center space-x-4">
-            {/* File input (hidden) */}
             <input
               type="file"
               ref={fileInputRef}
@@ -142,14 +130,14 @@ const SubmissionForm = ({
                   htmlFor="file-upload"
                   className="cursor-pointer flex items-center space-x-2 text-text-muted hover:text-text transition"
                 >
-                  <DocumentPlusIcon className="h-6 w-6" />
+                  <FilePlus className="h-6 w-6" />
                   <span className="text-sm">Upload a file (max 5MB)</span>
                 </label>
                 <span className="text-xs text-text-muted">or</span>
               </>
             ) : (
               <div className="flex items-center flex-1 min-w-0">
-                <DocumentIcon className="h-6 w-6 text-accent mr-2 flex-shrink-0" />
+                <File className="h-6 w-6 text-accent mr-2 flex-shrink-0" />
                 <span className="text-sm text-text truncate flex-1">{selectedFile.name}</span>
                 <span className="text-xs text-text-muted ml-2 flex-shrink-0">
                   {(selectedFile.size / 1024).toFixed(1)} KB
@@ -159,13 +147,12 @@ const SubmissionForm = ({
                   onClick={handleRemoveFile}
                   className="ml-2 text-error hover:text-error/80 transition"
                 >
-                  <XMarkIcon className="h-5 w-5" />
+                  <X className="h-5 w-5" />
                 </button>
               </div>
             )}
           </div>
 
-          {/* File error */}
           {fileError && (
             <p className="mt-1 text-sm text-error">{fileError}</p>
           )}
@@ -222,10 +209,7 @@ const SubmissionForm = ({
         >
           {isSaving ? (
             <span className="flex items-center justify-center">
-              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 100 8v4a8 8 0 01-8-8z" />
-              </svg>
+              <Loader2 className="animate-spin h-4 w-4 mr-2" />
               Saving...
             </span>
           ) : (
@@ -242,10 +226,7 @@ const SubmissionForm = ({
           >
             {isPreviewing ? (
               <span className="flex items-center justify-center">
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 100 8v4a8 8 0 01-8-8z" />
-                </svg>
+                <Loader2 className="animate-spin h-4 w-4 mr-2" />
                 Generating...
               </span>
             ) : (

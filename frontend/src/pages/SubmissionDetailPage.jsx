@@ -4,12 +4,7 @@ import { getSubmissionById, regenerateFeedback } from '../api/submissions.api';
 import FeedbackDisplay from '../components/submissions/FeedbackDisplay';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import ErrorMessage from '../components/common/ErrorMessage';
-import { 
-  ArrowLeftIcon, 
-  DocumentTextIcon, 
-  ChatBubbleLeftRightIcon,
-  ArrowPathIcon
-} from '@heroicons/react/24/outline';
+import { ArrowLeft, FileText, MessageCircle, RefreshCw } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 const SubmissionDetailPage = () => {
@@ -54,7 +49,6 @@ const SubmissionDetailPage = () => {
   if (error) return <ErrorMessage message={error} />;
   if (!submission) return <ErrorMessage message="Submission not found" />;
 
-  // Format date
   const formattedDate = new Date(submission.createdAt).toLocaleString('en-US', {
     year: 'numeric',
     month: 'short',
@@ -70,7 +64,7 @@ const SubmissionDetailPage = () => {
         onClick={() => navigate('/')}
         className="group inline-flex items-center text-sm text-text-muted hover:text-primary transition-colors duration-200 mb-6"
       >
-        <ArrowLeftIcon className="h-4 w-4 mr-1 group-hover:-translate-x-0.5 transition-transform" />
+        <ArrowLeft className="h-4 w-4 mr-1 group-hover:-translate-x-0.5 transition-transform" />
         Back to Dashboard
       </button>
 
@@ -97,7 +91,7 @@ const SubmissionDetailPage = () => {
       {/* Content Section */}
       <div className="bg-secondary rounded-2xl shadow-md border border-primary/10 p-6 md:p-8 mb-6">
         <div className="flex items-center space-x-2 mb-4">
-          <DocumentTextIcon className="h-5 w-5 text-primary" />
+          <FileText className="h-5 w-5 text-primary" />
           <h2 className="text-lg font-semibold text-text">Content</h2>
         </div>
         <div className="bg-primary/5 rounded-xl p-4 md:p-6 border border-primary/10">
@@ -111,7 +105,7 @@ const SubmissionDetailPage = () => {
       <div className="bg-secondary rounded-2xl shadow-md border border-primary/10 p-6 md:p-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
           <div className="flex items-center space-x-2">
-            <ChatBubbleLeftRightIcon className="h-5 w-5 text-accent" />
+            <MessageCircle className="h-5 w-5 text-accent" />
             <h2 className="text-lg font-semibold text-text">Feedback & Suggestions</h2>
           </div>
           <button
@@ -121,15 +115,12 @@ const SubmissionDetailPage = () => {
           >
             {regenerating ? (
               <>
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 100 8v4a8 8 0 01-8-8z" />
-                </svg>
+                <RefreshCw className="animate-spin h-4 w-4 mr-1.5" />
                 Regenerating...
               </>
             ) : (
               <>
-                <ArrowPathIcon className="h-4 w-4 mr-1.5" />
+                <RefreshCw className="h-4 w-4 mr-1.5" />
                 Regenerate Feedback
               </>
             )}
