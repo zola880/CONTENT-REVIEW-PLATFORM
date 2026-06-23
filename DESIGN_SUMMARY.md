@@ -10,12 +10,15 @@ The application follows a modular full-stack architecture designed for maintaina
 
 The system uses a layered architecture with clear responsibilities between frontend, backend, and database layers.
 
-| Layer | Responsibility | Implementation |
-|---|---|---|
-| Presentation Layer | User interface and client-side logic | React, Vite, Tailwind CSS |
-| API Layer | REST API endpoints and request handling | Express.js |
-| Business Layer | Application logic and processing | Services, Controllers |
-| Data Layer | Data persistence | MongoDB + Mongoose |
+| Layer |              Responsibility |                        Implementation |
+
+| Presentation Layer   User interface and client-side logic        React, Vite, Tailwind CSS 
+
+| API Layer            REST API endpoints and request handling     Express.js 
+
+| Business Layer       Application logic and processing            Services, Controllers 
+
+| Data Layer           Data persistence                            MongoDB + Mongoose 
 
 ### Why this approach?
 
@@ -23,27 +26,30 @@ This structure improves:
 
 - Code organization
 - Maintainability
-- Testing
+- Testinga
 - Future feature expansion
 
 Each layer has a single responsibility, making it easier to modify one part of the system without affecting others.
 
-Example:
 
-The feedback generation system can be changed from rule-based analysis to AI analysis without modifying the frontend or database structure.
 
----
 
-# 1.2 Feedback Service Abstraction
 
-Feedback generation is separated from controllers using a dedicated service layer.
+### 1.2 Feedback Service Abstraction
 
-The system supports multiple feedback providers:
+Feedback generation is decoupled from core application logic using the Strategy Pattern.
 
-- Rule-based feedback service
-- AI-powered feedback service using Groq API
+A factory dynamically selects the feedback provider based on the `FEEDBACK_PROVIDER` environment variable.
 
-The selected provider is controlled through:environment variable.
+The system supports two providers:
+- **Rule-Based Service** – uses heuristics (sentence length, passive voice, word complexity)
+- **Groq AI Service** – uses a large language model for context‑aware analysis
+
+The AI service automatically falls back to rule‑based logic if the API fails.
+
+This abstraction enables easy provider switching, cleaner controllers, and simplified testing.
+
+New AI providers (OpenAI, Claude, etc.) can be added with minimal changes to existing code.
 
 
 
@@ -87,7 +93,7 @@ Trade-off
 
 If the system later requires advanced analytics across feedback records, a separate feedback collection could be introduced.
 
-1.4 Authentication Design
+# 1.4 Authentication Design
 
 The application uses JWT-based authentication.
 
@@ -113,6 +119,7 @@ Protected API routes
 Token expiration
 Request rate limiting
 Security headers using Helmet
+
 2. Role-Based Access Control Implementation
 
 The system uses authorization rules to protect user data.
@@ -211,14 +218,18 @@ Sends files securely to the backend
 This design keeps file handling separate from business logic.
 
 4. Trade-offs Made
-Decision	Reason	Trade-off
-MongoDB instead of SQL	Flexible document structure and easy integration with Node.js	Less relational enforcement
-JWT authentication	Simple and scalable	Requires secure token management
-Embedded feedback data	Faster access with fewer queries	Complex analytics may require restructuring
-Rule-based + AI feedback	Supports free and advanced feedback options	AI requires external API availability
-React + Vite	Faster development experience	Requires manual configuration
-Modular backend services	Easier maintenance	More files and structure
-File validation middleware	Improves security	Adds processing overhead
+
+
+Decision	                        Reason	                          Trade-off
+MongoDB instead of SQL	      Flexible document structure and easy integration with Node.js	Less relational enforcement
+JWT authentication	      Simple and scalable                     	Requires secure token management
+Embedded feedback data        Faster access with fewer queries	      Complex analytics may require restructuring
+Rule-based + AI feedback      Supports free and advanced feedback options  	AI requires external API availability
+React + Vite	            Faster development experience	                  Requires manual configuration
+Modular backend services	Easier maintenance	                          More files and structure
+File validation middleware	Improves security	                           Adds processing overhead
+
+
 5. Security Considerations
 
 The application includes:
@@ -236,6 +247,7 @@ These protections reduce common security risks such as:
 Unauthorized access
 Brute-force attacks
 Invalid input processing
+
 6. Scalability Considerations
 
 The system is designed for future improvements:
@@ -260,6 +272,8 @@ Maintainability
 Extensibility
 
 The separation between frontend, backend services, and database allows the application to grow while keeping the codebase organized.
+
+
 
 Author: Zelalem Ybabe
 

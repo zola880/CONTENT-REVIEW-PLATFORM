@@ -1,10 +1,14 @@
 #  Content Review & Feedback Platform
 
-A full-stack web application that allows users to submit written content such as product descriptions and blog articles, then receive structured feedback including readability scores, clarity analysis, and improvement suggestions.
+A professional, full-stack content analysis tool designed for marketing teams, writers, and content creators. The platform enables users to submit written content (either by pasting text or uploading files) and receive instant, structured feedback on readability, clarity, and areas for improvement.
 
 The system is built using **React**, **Node.js**, **Express.js**, and **MongoDB** with secure authentication and scalable backend architecture.
 
----
+
+## Live Demo
+https://content-review-platform-two.vercel.app/
+
+
 
 # Features
 
@@ -17,7 +21,7 @@ The system is built using **React**, **Node.js**, **Express.js**, and **MongoDB*
 - Secure HTTP headers using Helmet
 - API rate limiting
 
-##  Content Management
+      ##  Content Management
 
 - Submit content with:
   - Title
@@ -29,7 +33,7 @@ The system is built using **React**, **Node.js**, **Express.js**, and **MongoDB*
 - Delete individual submissions
 - Delete all user submissions
 
-##  Smart Feedback System
+    ##  Smart Feedback System
 
 The application provides automated content analysis:
 
@@ -62,7 +66,7 @@ The application works on:
 - Tablet
 - Mobile devices
 
----
+
 
 # 🛠️ Technology Stack
 
@@ -123,7 +127,7 @@ Make sure you have installed:
 # 1. Clone Repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/zola880/CONTENT-REVIEW-PLATFORM
 
 cd content-review-platform
 
@@ -149,7 +153,7 @@ npm run dev
 
 Production:
 
-npm start
+npm run dev
 
 Backend will run:
 
@@ -177,18 +181,21 @@ Frontend will run:
 http://localhost:3000
 🔧 Environment Variables
 Backend (.env)
-Variable	Description	Example
-PORT	Backend server port	5000
-NODE_ENV	Environment	development
-MONGODB_URI	Database connection	mongodb+srv://...
-JWT_SECRET	JWT signing key	secret-key
-JWT_EXPIRES_IN	Token expiration	7d
-FEEDBACK_PROVIDER	Feedback engine	rule/groq
-GROQ_API_KEY	Groq API key	gsk_xxx
-FRONTEND_URL	Frontend URL	http://localhost:3000
+Variable	      Description	                Example
+PORT	            Backend server port      	5000
+NODE_ENV	      Environment	development
+MONGODB_URI  	Database connection	      mongodb+srv://...
+JWT_SECRET	      JWT signing key	            secret-key
+JWT_EXPIRES_IN	Token expiration	            7d
+FEEDBACK_PROVIDER	Feedback engine	            rule/groq
+GROQ_API_KEY	Groq API key	            gsk_xxx
+FRONTEND_URL	Frontend URL	            http://localhost:3000
+
 Frontend (.env)
-Variable	Description	Example
+
+Variable	       Description	Example
 VITE_API_URL	Backend API URL	http://localhost:5000/api/v1
+
 
  Project Structure
 
@@ -225,21 +232,22 @@ content-review-platform/
 ├── design-summary.md
 └── architecture-diagram.md
 
+
    ========== System Architecture ===============
 
-The application follows a three-layer architecture:
+                The application follows a three-layer architecture:
 
-React Frontend
-        |
-        |
- REST API Requests
-        |
-        v
-Express Backend
-        |
-        |
-        v
-MongoDB Database
+                       React Frontend
+                             |
+                             |
+                       REST API Requests
+                             |
+                             v
+                        Express Backend
+                           |
+                           |
+                           v
+                       MongoDB Database
 
 Main components:
 
@@ -263,11 +271,6 @@ Delete their own content
 Receive feedback
 Admin Role (if enabled)
 
-Administrators can:
-
-Manage users
-View system-level information
-Perform administrative actions
 
 Access control is enforced using backend middleware that verifies:
 
@@ -318,22 +321,10 @@ User permission
 
 Only valid uploads are accepted.
 
-  Testing the Application
+  
+ Author
 
-Fork repository
-Create branch:
-git checkout -b feature-name
-Commit changes:
-git commit -m "Add feature"
-Push changes:
-git push origin feature-name
-Create Pull Requests
-
- 
-
-   Author
-
-Your Zelalem ybabe
+ Zelalem ybabe
 
 GitHub: zola880
 
