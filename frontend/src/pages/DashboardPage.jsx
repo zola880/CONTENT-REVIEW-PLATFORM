@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import SummaryCards from '../components/dashboard/SummaryCards';
-import SubmissionList from '../components/dashboard/SubmissionList';
+import RecentSubmissionsCards from '../components/dashboard/RecentSubmissionsCards'; 
 import { Plus } from 'lucide-react';
 
 const DashboardPage = () => {
@@ -20,7 +20,8 @@ const DashboardPage = () => {
         <SummaryCards />
       </div>
       <div className="mt-8">
-        <SubmissionList />
+       
+        <RecentSubmissionsCards />
       </div>
     </>
   );
