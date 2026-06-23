@@ -2,9 +2,9 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
 const apiClient = axios.create({
-  // ✅ Use import.meta.env.VITE_API_URL instead of process.env.REACT_APP_API_URL
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1',
-  headers: { 'Content-Type': 'application/json' },
+  // ✅ REMOVED: headers: { 'Content-Type': 'application/json' }
+  // Axios will set the correct Content-Type automatically
 });
 
 apiClient.interceptors.request.use(
