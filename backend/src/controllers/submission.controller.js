@@ -75,9 +75,9 @@ exports.createSubmission = async (req, res, next) => {
       throw new AppError('Title, content, and category are required', 400);
     }
 
-    // Generate feedback using the factory
+    // Generate feedback using the factory – now passing title
     const feedbackService = FeedbackFactory.getService();
-    const feedback = await feedbackService.generateFeedback(content, category);
+    const feedback = await feedbackService.generateFeedback(content, category, title);
 
     // Build submission data
     const submissionData = {
@@ -109,12 +109,12 @@ exports.createSubmission = async (req, res, next) => {
 
 /**
  * Generate feedback preview without saving the submission
- * ✅ NOW SUPPORTS BOTH TEXT AND FILE UPLOADS
+ * ✅ NOW SUPPORTS BOTH TEXT AND FILE UPLOADS and uses title
  */
 exports.previewFeedback = async (req, res, next) => {
   try {
     let content = req.body.content;
-    const { category } = req.body;
+    const { category, title } = req.body; // ✅ Get title from request body
 
     // If a file was uploaded, extract text from it
     if (req.file) {
@@ -131,7 +131,8 @@ exports.previewFeedback = async (req, res, next) => {
     }
 
     const feedbackService = FeedbackFactory.getService();
-    const feedback = await feedbackService.generateFeedback(content, category);
+    // ✅ Pass title (may be undefined if not provided, but service handles it)
+    const feedback = await feedbackService.generateFeedback(content, category, title);
     res.status(200).json(ApiResponse.success({ feedback }, 'Feedback preview generated'));
   } catch (error) {
     next(error);
@@ -151,9 +152,13 @@ exports.regenerateFeedback = async (req, res, next) => {
       throw new AppError('Submission not found or access denied', 404);
     }
 
-    // Regenerate feedback
+    // Regenerate feedback – now passing title
     const feedbackService = FeedbackFactory.getService();
-    const newFeedback = await feedbackService.generateFeedback(submission.content, submission.category);
+    const newFeedback = await feedbackService.generateFeedback(
+      submission.content,
+      submission.category,
+      submission.title // ✅ Pass the submission's title
+    );
 
     // Update submission with new feedback
     submission.feedback = newFeedback;

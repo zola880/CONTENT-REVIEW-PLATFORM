@@ -8,13 +8,15 @@ const createSubmissionSchema = Joi.object({
   title: Joi.string().min(3).max(100).required(),
   content: Joi.string().min(0).max(10000).optional(), // Made optional for file uploads
   category: Joi.string().valid(...CATEGORIES).required(),
-}).unknown(true); // Allows extra fields (like file metadata)
+}).unknown(true); // Allows extra fields (like file metadata) – kept for flexibility
 
-// Schema for previewing feedback – allows extra fields (like 'title') from the form
+// Schema for previewing feedback – now explicitly includes title as optional
+// This ensures the AI receives title for title-content alignment analysis
 const previewFeedbackSchema = Joi.object({
   content: Joi.string().min(10).max(10000).required(),
   category: Joi.string().valid(...CATEGORIES).required(),
-}).unknown(true); // allows additional fields (e.g., title) without error
+  title: Joi.string().min(3).max(100).optional(), // ✅ Explicitly allow title
+});
 
 // Schema for updating a submission title (rename)
 const updateSubmissionSchema = Joi.object({

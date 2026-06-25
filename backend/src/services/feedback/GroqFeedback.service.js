@@ -10,24 +10,44 @@ class GroqFeedbackService extends BaseFeedbackService {
     this.fallbackService = new RuleBasedFeedbackService();
   }
 
-  async generateFeedback(content, category) {
+  /**
+   * Generate AI-powered feedback with title-aware analysis.
+   * @param {string} content - The text content.
+   * @param {string} category - The category of the content.
+   * @param {string} title - The title of the submission.
+   * @returns {Promise<{ readabilityScore: number, clarityScore: number, suggestions: string[] }>}
+   */
+  async generateFeedback(content, category, title) {
     // Count words
     const wordCount = content.trim().split(/\s+/).length;
 
     // If content is too short, skip AI
     if (wordCount < 5) {
       logger.info(`Content too short (${wordCount} words) – using rule‑based fallback.`);
-      return this.fallbackService.generateFeedback(content, category);
+      return this.fallbackService.generateFeedback(content, category, title);
     }
+
+    // Prepare title context (if available)
+    const titleContext = title && title.trim() ? `Title: "${title}"` : 'Title: Not provided';
 
     const systemPrompt = `
       You are an expert content quality analyst with deep experience in marketing, technical writing, and editorial review.
       Your task is to evaluate the given text critically and provide a structured, honest feedback report in JSON.
 
-      ### Evaluation Criteria:
-      - **Readability**: How easy is the text to read? Consider sentence length, word choice, flow, and coherence. Lower scores for rambling, convoluted, or nonsensical text.
-      - **Clarity**: Is the message clear and unambiguous? Is the purpose evident? Does it have a logical structure? Low clarity if the text is vague, confusing, or lacks direction.
-      - **Suggestions**: Provide at least 3 concrete, actionable recommendations to improve the content. They must be *specific to the content* – not generic. If the content is placeholder or gibberish, suggest adding meaningful information, defining a clear objective, providing examples, structuring the text, etc.
+      ### Key Evaluation Dimensions:
+      1. **Title-Content Alignment**: Does the content match the promise and theme of the title? Are key terms from the title addressed?
+      2. **Professionalism**: Is the tone appropriate? Is the content well-structured? Is it free from informal or unprofessional language?
+      3. **Readability**: How easy is the text to read? Consider sentence length, word choice, flow, and coherence.
+      4. **Clarity**: Is the message clear and unambiguous? Is the purpose evident? Does it have a logical structure?
+
+      ### Scoring Guidelines:
+      - **readabilityScore** (0-100): 90+ = Excellent flow, 70-89 = Good, 50-69 = Fair, 0-49 = Needs improvement.
+      - **clarityScore** (0-100): 90+ = Crystal clear, 70-89 = Mostly clear, 50-69 = Somewhat unclear, 0-49 = Confusing.
+      - **suggestions**: Provide at least 3 concrete, actionable recommendations. Include *specific* advice on:
+        - Title-content alignment (if they don't match)
+        - Professionalism (tone, structure, formality)
+        - Readability (sentence length, word choice)
+        - Clarity (ambiguity, purpose, logical flow)
 
       ### Output Format:
       {
@@ -40,29 +60,31 @@ class GroqFeedbackService extends BaseFeedbackService {
     `;
 
     const userPrompt = `
+      ${titleContext}
       Category: ${category}
       Content:
       """${content}"""
 
       ### Instructions:
-      1. Read the content carefully.
-      2. Assess its quality honestly – if it's placeholder text, gibberish, or extremely vague, score it low (e.g., readability < 40, clarity < 30) and suggest concrete improvements like: "Replace placeholder with actual content describing the product/service.", "Add a clear objective for this text.", "Structure the content with a clear introduction, body, and conclusion."
-      3. Ensure suggestions are directly tied to issues you observed.
-      4. Do not output any extra text – only JSON.
+      1. **First, assess alignment**: Does the content directly address the title? Are the title's key terms present? If not, suggest how to bridge the gap.
+      2. **Evaluate professionalism**: Is the tone consistent and professional? Is the content well-organized? Suggest improvements if needed.
+      3. **Evaluate clarity and readability**: Are sentences too long? Are ideas clearly expressed? Provide specific fixes.
+      4. **Be honest and critical**: If the content is placeholder, gibberish, or extremely vague, score it low (e.g., readability < 30, clarity < 20) and provide clear, actionable suggestions.
+      5. **Ensure at least 3 suggestions** – they must be specific and directly tied to issues you observed.
+      6. **Do not output any extra text – only JSON.**
     `;
 
     try {
       const response = await axios.post(
         groqApiUrl,
         {
-          // UPDATED TO SUPPORTED MODEL
           model: 'llama-3.3-70b-versatile',
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
           ],
           temperature: 0.2,
-          max_tokens: 600,
+          max_tokens: 700,
         },
         {
           headers: {
@@ -122,7 +144,7 @@ class GroqFeedbackService extends BaseFeedbackService {
       }
 
       logger.warn('Falling back to rule‑based feedback due to Groq error');
-      return this.fallbackService.generateFeedback(content, category);
+      return this.fallbackService.generateFeedback(content, category, title);
     }
   }
 }

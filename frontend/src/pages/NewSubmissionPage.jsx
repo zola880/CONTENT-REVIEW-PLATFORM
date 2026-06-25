@@ -13,7 +13,7 @@ const NewSubmissionPage = () => {
   const [isPreviewing, setIsPreviewing] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  // ✅ Save submission and clear form for next entry (stays on page)
+  //  Save submission and clear form for next entry (stays on page)
   const handleSaveAndNew = async (data, resetForm, file) => {
     setIsSubmitting(true);
     try {
@@ -35,7 +35,6 @@ const NewSubmissionPage = () => {
       resetForm();
       setPreview(null);
       setSelectedFile(null);
-      // ✅ Stay on the page – ready for next submission
     } catch (error) {
       // handled by interceptor
     } finally {
@@ -43,7 +42,7 @@ const NewSubmissionPage = () => {
     }
   };
 
-  // ✅ Preview feedback – works for BOTH text and files
+  //  Preview feedback – includes title for better AI analysis
   const handlePreview = async (data, file) => {
     setIsPreviewing(true);
     try {
@@ -53,6 +52,7 @@ const NewSubmissionPage = () => {
       if (file) {
         // File upload: use FormData
         payload = new FormData();
+        payload.append('title', data.title); //  Include title
         payload.append('category', data.category);
         payload.append('file', file);
         if (data.content) {
@@ -62,6 +62,7 @@ const NewSubmissionPage = () => {
       } else {
         // Text-only: send JSON
         payload = {
+          title: data.title, //  Include title
           content: data.content,
           category: data.category,
         };
