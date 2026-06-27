@@ -13,12 +13,12 @@ const Layout = ({ children }) => {
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-primary/50 z-20 md:hidden"
+          className="fixed inset-0 bg-primary/40 backdrop-blur-sm z-20 md:hidden"
           onClick={closeSidebar}
         />
       )}
 
-      {/* Sidebar – fixed on desktop, slides on mobile */}
+      {/* Sidebar */}
       <aside
         className={`
           fixed inset-y-0 left-0 z-30 w-64 bg-primary shadow-xl transform transition-transform duration-300 ease-in-out
@@ -29,24 +29,21 @@ const Layout = ({ children }) => {
         <Sidebar closeMobile={closeSidebar} />
       </aside>
 
-      {/* Main Content */}
+      {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Top bar (mobile only) */}
+        {/* Mobile header */}
         <div className="md:hidden bg-primary px-4 py-3 flex items-center justify-between">
-          <button onClick={toggleSidebar} className="text-white">
-            {sidebarOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+          <button onClick={toggleSidebar} className="text-white hover:text-accent transition">
+            {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
-          <span className="text-white font-bold text-lg">Content Review</span>
-          <div className="w-6" /> {/* spacer */}
+          <span className="text-white font-semibold text-lg tracking-tight">Content Review</span>
+          <div className="w-6" />
         </div>
 
-        {/* Page content */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6">
-          {children}
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+          <div className="dashboard-container">
+            {children}
+          </div>
         </main>
       </div>
     </div>

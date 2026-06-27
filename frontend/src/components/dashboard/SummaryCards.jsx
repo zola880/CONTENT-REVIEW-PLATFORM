@@ -44,25 +44,25 @@ const SummaryCards = () => {
       label: 'Total Submissions',
       value: stats.total,
       icon: FileText,
-      bg: 'bg-primary',
-      iconColor: 'text-white/40',
-      textColor: 'text-white',
+      color: 'text-primary',
+      bg: 'bg-primary/5',
+      iconBg: 'bg-primary/10',
     },
     {
       label: 'Avg Readability',
       value: stats.avgReadability + '%',
       icon: Eye,
-      bg: 'bg-accent',
-      iconColor: 'text-white/40',
-      textColor: 'text-white',
+      color: 'text-accent',
+      bg: 'bg-accent/5',
+      iconBg: 'bg-accent/10',
     },
     {
       label: 'Avg Clarity',
       value: stats.avgClarity + '%',
       icon: Sparkles,
-      bg: 'bg-success',
-      iconColor: 'text-white/40',
-      textColor: 'text-white',
+      color: 'text-success',
+      bg: 'bg-success/5',
+      iconBg: 'bg-success/10',
     },
   ];
 
@@ -71,13 +71,17 @@ const SummaryCards = () => {
       {cards.map((card, idx) => (
         <div
           key={idx}
-          className={`${card.bg} rounded-xl shadow-lg p-6 text-white flex items-center justify-between hover:shadow-xl transition-shadow duration-200`}
+          className="bg-secondary rounded-xl shadow-sm border border-primary/5 p-6 hover:shadow-md transition-all duration-200"
         >
-          <div>
-            <p className="text-sm font-medium opacity-80">{card.label}</p>
-            <p className="text-3xl font-bold mt-1">{card.value}</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-text-muted">{card.label}</p>
+              <p className="text-2xl font-semibold text-text mt-0.5">{card.value}</p>
+            </div>
+            <div className={`${card.iconBg} p-3 rounded-xl`}>
+              <card.icon className={`h-5 w-5 ${card.color}`} strokeWidth={1.5} />
+            </div>
           </div>
-          <card.icon className={`h-12 w-12 opacity-50 ${card.iconColor}`} />
         </div>
       ))}
     </div>

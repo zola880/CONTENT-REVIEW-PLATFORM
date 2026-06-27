@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { User, Mail, Lock } from 'lucide-react';
 
 const schema = yup.object({
   name: yup.string().min(2, 'Minimum 2 characters').max(50, 'Maximum 50 characters').required('Name is required'),
@@ -27,35 +28,70 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
-        <h1 className="text-2xl font-bold text-center">Register</h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <div className="min-h-screen flex items-center justify-center bg-secondary p-4">
+      <div className="w-full max-w-md bg-secondary rounded-2xl shadow-sm border border-primary/10 p-8">
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-semibold text-text tracking-tight">Create Account</h1>
+          <p className="text-text-muted text-sm mt-1">Start analyzing your content</p>
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium">Name</label>
-            <input {...register('name')} className="mt-1 w-full border rounded px-3 py-2" />
-            {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+            <label className="block text-sm font-medium text-text-light mb-1">Full Name</label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-text-muted/40" strokeWidth={1.5} />
+              <input
+                {...register('name')}
+                type="text"
+                className="w-full pl-10 pr-4 py-2.5 border border-primary/20 rounded-lg bg-secondary text-text placeholder:text-text-muted/40 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                placeholder="John Doe"
+              />
+            </div>
+            {errors.name && <p className="mt-1 text-sm text-error">{errors.name.message}</p>}
           </div>
+
           <div>
-            <label className="block text-sm font-medium">Email</label>
-            <input {...register('email')} className="mt-1 w-full border rounded px-3 py-2" />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+            <label className="block text-sm font-medium text-text-light mb-1">Email</label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-text-muted/40" strokeWidth={1.5} />
+              <input
+                {...register('email')}
+                type="email"
+                className="w-full pl-10 pr-4 py-2.5 border border-primary/20 rounded-lg bg-secondary text-text placeholder:text-text-muted/40 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                placeholder="you@example.com"
+              />
+            </div>
+            {errors.email && <p className="mt-1 text-sm text-error">{errors.email.message}</p>}
           </div>
+
           <div>
-            <label className="block text-sm font-medium">Password</label>
-            <input type="password" {...register('password')} className="mt-1 w-full border rounded px-3 py-2" />
-            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+            <label className="block text-sm font-medium text-text-light mb-1">Password</label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-text-muted/40" strokeWidth={1.5} />
+              <input
+                {...register('password')}
+                type="password"
+                className="w-full pl-10 pr-4 py-2.5 border border-primary/20 rounded-lg bg-secondary text-text placeholder:text-text-muted/40 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                placeholder="••••••••"
+              />
+            </div>
+            {errors.password && <p className="mt-1 text-sm text-error">{errors.password.message}</p>}
           </div>
+
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+            className="w-full py-2.5 bg-primary text-white font-medium rounded-lg hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? 'Registering...' : 'Register'}
+            {isSubmitting ? 'Creating account...' : 'Create account'}
           </button>
         </form>
-        <p className="text-center text-sm">
-          Already have an account? <Link to="/login" className="text-blue-600">Login</Link>
+
+        <p className="text-center text-sm text-text-muted mt-6">
+          Already have an account?{' '}
+          <Link to="/login" className="text-accent hover:text-accent-dark font-medium transition">
+            Sign in
+          </Link>
         </p>
       </div>
     </div>

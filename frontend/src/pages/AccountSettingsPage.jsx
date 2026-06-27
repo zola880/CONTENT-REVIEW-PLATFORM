@@ -1,10 +1,9 @@
 import { useAuth } from '../contexts/AuthContext';
 import { deleteAllSubmissions } from '../api/submissions.api';
 import { toast } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
-import { Settings, Trash2, ArrowLeft, User } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Trash2 } from 'lucide-react';
 
 const AccountSettingsPage = () => {
   const { user } = useAuth();
@@ -29,89 +28,71 @@ const AccountSettingsPage = () => {
 
   return (
     <div className="max-w-3xl mx-auto">
-      {/* Header with Back Link */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-3">
-          <div className="p-2 bg-accent/10 rounded-lg">
-            <Settings className="h-8 w-8 text-accent" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-text">Account Settings</h1>
-            <p className="text-sm text-text-muted">Manage your profile and data</p>
-          </div>
-        </div>
-        <Link
-          to="/"
-          className="inline-flex items-center text-sm text-primary hover:text-primary-light transition"
-        >
-          <ArrowLeft className="h-4 w-4 mr-1" />
-          Dashboard
-        </Link>
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold text-text tracking-tight">Account Settings</h1>
+        <p className="text-text-muted text-sm mt-1">Manage your profile and data</p>
       </div>
 
       {/* Profile Card */}
-      <div className="bg-secondary rounded-xl shadow-md border border-primary/10 overflow-hidden mb-6">
-        <div className="p-6 md:p-8">
-          <div className="flex items-center space-x-4 mb-6">
-            <div className="h-16 w-16 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-bold">
-              {user?.name?.charAt(0).toUpperCase() || 'U'}
-            </div>
-            <div>
-              <p className="text-xl font-semibold text-text">{user?.name}</p>
-              <p className="text-text-muted">{user?.email}</p>
-            </div>
+      <div className="bg-secondary rounded-xl shadow-sm border border-primary/5 p-6 md:p-8 mb-6">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="h-12 w-12 rounded-full bg-primary text-white flex items-center justify-center text-sm font-semibold">
+            {user?.name?.charAt(0).toUpperCase() || 'U'}
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-medium text-text-light uppercase tracking-wider">Full Name</label>
-              <p className="mt-1 text-text font-medium">{user?.name}</p>
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-text-light uppercase tracking-wider">Email Address</label>
-              <p className="mt-1 text-text font-medium">{user?.email}</p>
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-text-light uppercase tracking-wider">Member Since</label>
-              <p className="mt-1 text-text font-medium">
-                {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : '—'}
-              </p>
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-text-light uppercase tracking-wider">Total Submissions</label>
-              <p className="mt-1 text-text font-medium">—</p>
-            </div>
+          <div>
+            <p className="text-text font-medium">{user?.name}</p>
+            <p className="text-text-muted text-sm">{user?.email}</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs font-medium text-text-muted uppercase tracking-wider">Full Name</label>
+            <p className="mt-1 text-text">{user?.name}</p>
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-text-muted uppercase tracking-wider">Email</label>
+            <p className="mt-1 text-text">{user?.email}</p>
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-text-muted uppercase tracking-wider">Member Since</label>
+            <p className="mt-1 text-text">
+              {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : '—'}
+            </p>
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-text-muted uppercase tracking-wider">Total Submissions</label>
+            <p className="mt-1 text-text">—</p>
           </div>
         </div>
       </div>
 
       {/* Danger Zone */}
-      <div className="bg-secondary rounded-xl shadow-md border border-error/30 overflow-hidden">
-        <div className="p-6 md:p-8">
-          <div className="flex items-center space-x-2 mb-2">
-            <Trash2 className="h-5 w-5 text-error" />
-            <h3 className="text-lg font-semibold text-error">Danger Zone</h3>
-          </div>
-          <p className="text-sm text-text-light mb-4">
-            Permanently delete all your submissions and associated feedback. This action <strong>cannot</strong> be undone.
-          </p>
-          <button
-            onClick={handleDeleteAll}
-            disabled={isDeleting}
-            className="inline-flex items-center px-4 py-2 bg-error text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-error transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isDeleting ? (
-              <>
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 100 8v4a8 8 0 01-8-8z" />
-                </svg>
-                Deleting...
-              </>
-            ) : (
-              'Delete All Submissions'
-            )}
-          </button>
+      <div className="bg-secondary rounded-xl shadow-sm border border-error/20 p-6 md:p-8">
+        <div className="flex items-center gap-2 mb-2">
+          <Trash2 className="h-4 w-4 text-error" strokeWidth={1.5} />
+          <h3 className="text-sm font-medium text-error">Danger Zone</h3>
         </div>
+        <p className="text-sm text-text-muted mb-4">
+          Permanently delete all your submissions and associated feedback. This action <strong>cannot</strong> be undone.
+        </p>
+        <button
+          onClick={handleDeleteAll}
+          disabled={isDeleting}
+          className="inline-flex items-center px-4 py-2 bg-error text-white text-sm font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-error transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isDeleting ? (
+            <>
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 100 8v4a8 8 0 01-8-8z" />
+              </svg>
+              Deleting...
+            </>
+          ) : (
+            'Delete All Submissions'
+          )}
+        </button>
       </div>
     </div>
   );
