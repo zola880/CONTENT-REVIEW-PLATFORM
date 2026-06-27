@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getSubmissions } from '../../api/submissions.api';
 import LoadingSpinner from '../common/LoadingSpinner';
-import { FileText, Eye, Sparkles } from 'lucide-react';
+import { FileText, Eye, Sparkles, TrendingUp, TrendingDown } from 'lucide-react';
 
 const SummaryCards = () => {
   const [stats, setStats] = useState({ total: 0, avgReadability: 0, avgClarity: 0 });
@@ -39,51 +39,77 @@ const SummaryCards = () => {
 
   if (loading) return <LoadingSpinner />;
 
+  // Mock trend data – in real app, compute from previous period
+  const getTrend = (type) => {
+    const trends = {
+      total: { value: '+12%', direction: 'up' },
+      readability: { value: '+5%', direction: 'up' },
+      clarity: { value: '-2%', direction: 'down' },
+    };
+    return trends[type];
+  };
+
   const cards = [
     {
+      key: 'total',
       label: 'Total Submissions',
       value: stats.total,
       icon: FileText,
-      color: 'text-primary',
-      bg: 'bg-primary/5',
-      iconBg: 'bg-primary/10',
+      accent: 'teal',
+      bg: 'bg-teal-50',
+      iconBg: 'bg-teal-100',
+      color: 'text-teal-600',
     },
     {
+      key: 'readability',
       label: 'Avg Readability',
       value: stats.avgReadability + '%',
       icon: Eye,
-      color: 'text-accent',
-      bg: 'bg-accent/5',
-      iconBg: 'bg-accent/10',
+      accent: 'amber',
+      bg: 'bg-amber-50',
+      iconBg: 'bg-amber-100',
+      color: 'text-amber-600',
     },
     {
+      key: 'clarity',
       label: 'Avg Clarity',
       value: stats.avgClarity + '%',
       icon: Sparkles,
-      color: 'text-success',
-      bg: 'bg-success/5',
-      iconBg: 'bg-success/10',
+      accent: 'green',
+      bg: 'bg-green-50',
+      iconBg: 'bg-green-100',
+      color: 'text-green-600',
     },
   ];
 
   return (
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {cards.map((card, idx) => (
-        <div
-          key={idx}
-          className="bg-secondary rounded-xl shadow-sm border border-primary/5 p-6 hover:shadow-md transition-all duration-200"
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-text-muted">{card.label}</p>
-              <p className="text-2xl font-semibold text-text mt-0.5">{card.value}</p>
-            </div>
-            <div className={`${card.iconBg} p-3 rounded-xl`}>
-              <card.icon className={`h-5 w-5 ${card.color}`} strokeWidth={1.5} />
+      {cards.map((card) => {
+        const trend = getTrend(card.key);
+        const TrendIcon = trend.direction === 'up' ? TrendingUp : TrendingDown;
+        const trendColor = trend.direction === 'up' ? 'text-green-600' : 'text-red-600';
+
+        return (
+          <div
+            key={card.key}
+            className="bg-white rounded-xl shadow-sm border border-gray-200/50 p-6 hover:shadow-md hover:border-gray-200/80 transition-all duration-200"
+          >
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500">{card.label}</p>
+                <p className="text-3xl font-bold text-gray-900 mt-1 tracking-tight">{card.value}</p>
+                <div className={`flex items-center gap-1 mt-1.5 text-xs font-medium ${trendColor}`}>
+                  <TrendIcon className="h-3 w-3" strokeWidth={2} />
+                  {trend.value} <span className="text-gray-400 font-normal">vs last month</span>
+                </div>
+              </div>
+              <div className={`${card.bg} p-3 rounded-xl`}>
+                <card.icon className={`h-5 w-5 ${card.color}`} strokeWidth={1.5} />
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

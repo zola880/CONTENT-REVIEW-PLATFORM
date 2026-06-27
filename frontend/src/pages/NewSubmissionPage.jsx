@@ -4,6 +4,7 @@ import { createSubmission, previewFeedback } from '../api/submissions.api';
 import SubmissionForm from '../components/submissions/SubmissionForm';
 import FeedbackDisplay from '../components/submissions/FeedbackDisplay';
 import { toast } from 'react-hot-toast';
+import { FilePlus } from 'lucide-react';
 
 const NewSubmissionPage = () => {
   const navigate = useNavigate();
@@ -78,14 +79,19 @@ const NewSubmissionPage = () => {
 
   return (
     <div className="max-w-3xl mx-auto">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-text tracking-tight">New Submission</h1>
-        <p className="text-text-muted text-sm mt-1">Write your content or upload a file for analysis</p>
+      {/* Header with icon */}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2 bg-teal-50 rounded-lg">
+          <FilePlus className="h-5 w-5 text-teal-600" strokeWidth={1.5} />
+        </div>
+        <div>
+          <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">New Submission</h1>
+          <p className="text-gray-500 text-sm mt-0.5">Write your content or upload a file for analysis</p>
+        </div>
       </div>
 
       {/* Main Card */}
-      <div className="bg-secondary rounded-xl shadow-sm border border-primary/5 p-6 md:p-8">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200/50 p-6 md:p-8">
         <SubmissionForm
           onSaveAndNew={handleSaveAndNew}
           onPreview={handlePreview}
@@ -98,8 +104,8 @@ const NewSubmissionPage = () => {
 
       {/* Preview Feedback Section */}
       {preview && (
-        <div className="mt-8 bg-secondary rounded-xl shadow-sm border border-primary/5 p-6 md:p-8">
-          <h2 className="text-sm font-medium text-text-muted uppercase tracking-wider mb-4">
+        <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-200/50 p-6 md:p-8">
+          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">
             AI Feedback Preview
           </h2>
           <FeedbackDisplay feedback={preview} />

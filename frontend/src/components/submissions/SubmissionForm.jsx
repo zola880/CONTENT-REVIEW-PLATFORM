@@ -63,7 +63,6 @@ const SubmissionForm = ({
 
   const isFileSelected = !!selectedFile;
 
-  // ✅ Save and reset for next entry
   const handleSaveAndNew = (data) => {
     if (!isFileSelected && (!data.content || data.content.trim().length < 10)) {
       alert('Content is required when no file is uploaded and must be at least 10 characters.');
@@ -72,9 +71,7 @@ const SubmissionForm = ({
     onSaveAndNew(data, reset, selectedFile);
   };
 
-  // ✅ Preview – works for both text and files
   const handlePreview = (data) => {
-    // Pass both data and file to parent
     onPreview(data, selectedFile);
   };
 
@@ -82,26 +79,26 @@ const SubmissionForm = ({
     <form className="space-y-6">
       {/* Title */}
       <div>
-        <label className="block text-sm font-medium text-text-light mb-1">
-          Title <span className="text-error">*</span>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Title <span className="text-red-500">*</span>
         </label>
         <input
           {...register('title')}
-          className="w-full border border-primary/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent bg-secondary text-text transition"
+          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
           placeholder="Give your submission a clear title"
         />
         {errors.title && (
-          <p className="mt-1 text-sm text-error">{errors.title.message}</p>
+          <p className="mt-1 text-sm text-red-500">{errors.title.message}</p>
         )}
       </div>
 
       {/* Content & File Upload Section */}
       <div>
         <div className="flex items-center justify-between mb-1">
-          <label className="block text-sm font-medium text-text-light">
-            Content <span className="text-error">*</span>
+          <label className="block text-sm font-medium text-gray-700">
+            Content <span className="text-red-500">*</span>
           </label>
-          <span className="text-xs text-text-muted">
+          <span className="text-xs text-gray-400">
             {isFileSelected ? 'File selected' : 'Paste text or upload a file'}
           </span>
         </div>
@@ -109,8 +106,8 @@ const SubmissionForm = ({
         <div
           className={`relative border-2 border-dashed rounded-lg p-4 transition ${
             isFileSelected
-              ? 'border-accent bg-accent/5'
-              : 'border-primary/20 hover:border-primary/40 bg-secondary'
+              ? 'border-amber-300 bg-amber-50/50'
+              : 'border-gray-200 hover:border-gray-300 bg-white'
           }`}
         >
           <div className="flex items-center space-x-4">
@@ -127,33 +124,33 @@ const SubmissionForm = ({
               <>
                 <label
                   htmlFor="file-upload"
-                  className="cursor-pointer flex items-center space-x-2 text-text-muted hover:text-text transition"
+                  className="cursor-pointer flex items-center space-x-2 text-gray-500 hover:text-gray-700 transition"
                 >
-                  <FilePlus className="h-6 w-6" />
+                  <FilePlus className="h-6 w-6" strokeWidth={1.5} />
                   <span className="text-sm">Upload a file (max 5MB)</span>
                 </label>
-                <span className="text-xs text-text-muted">or</span>
+                <span className="text-xs text-gray-300">or</span>
               </>
             ) : (
               <div className="flex items-center flex-1 min-w-0">
-                <File className="h-6 w-6 text-accent mr-2 flex-shrink-0" />
-                <span className="text-sm text-text truncate flex-1">{selectedFile.name}</span>
-                <span className="text-xs text-text-muted ml-2 flex-shrink-0">
+                <File className="h-6 w-6 text-amber-600 mr-2 flex-shrink-0" strokeWidth={1.5} />
+                <span className="text-sm text-gray-700 truncate flex-1">{selectedFile.name}</span>
+                <span className="text-xs text-gray-400 ml-2 flex-shrink-0">
                   {(selectedFile.size / 1024).toFixed(1)} KB
                 </span>
                 <button
                   type="button"
                   onClick={handleRemoveFile}
-                  className="ml-2 text-error hover:text-error/80 transition"
+                  className="ml-2 text-red-500 hover:text-red-700 transition"
                 >
-                  <X className="h-5 w-5" />
+                  <X className="h-5 w-5" strokeWidth={1.5} />
                 </button>
               </div>
             )}
           </div>
 
           {fileError && (
-            <p className="mt-1 text-sm text-error">{fileError}</p>
+            <p className="mt-1 text-sm text-red-500">{fileError}</p>
           )}
 
           {!isFileSelected && (
@@ -161,18 +158,18 @@ const SubmissionForm = ({
               <textarea
                 {...register('content')}
                 rows="6"
-                className="w-full border border-primary/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent bg-secondary text-text transition resize-y"
+                className="w-full border border-gray-200 rounded-lg px-4 py-3 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition resize-y"
                 placeholder="Write your product description, blog post, or article here..."
                 disabled={isFileSelected}
               />
               {errors.content && (
-                <p className="mt-1 text-sm text-error">{errors.content.message}</p>
+                <p className="mt-1 text-sm text-red-500">{errors.content.message}</p>
               )}
             </div>
           )}
 
           {isFileSelected && (
-            <p className="text-xs text-text-muted mt-2">
+            <p className="text-xs text-gray-400 mt-2">
               File will be uploaded and analyzed. The textarea below is disabled.
             </p>
           )}
@@ -181,12 +178,12 @@ const SubmissionForm = ({
 
       {/* Category */}
       <div>
-        <label className="block text-sm font-medium text-text-light mb-1">
-          Category <span className="text-error">*</span>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Category <span className="text-red-500">*</span>
         </label>
         <select
           {...register('category')}
-          className="w-full border border-primary/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent bg-secondary text-text transition appearance-none"
+          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition appearance-none"
         >
           <option value="">Select a category</option>
           {CATEGORIES.map((cat) => (
@@ -194,54 +191,52 @@ const SubmissionForm = ({
           ))}
         </select>
         {errors.category && (
-          <p className="mt-1 text-sm text-error">{errors.category.message}</p>
+          <p className="mt-1 text-sm text-red-500">{errors.category.message}</p>
         )}
       </div>
 
-      {/* ✅ Buttons – New Flow */}
+      {/* Buttons */}
       <div className="flex flex-col sm:flex-row gap-3 pt-2">
-        {/* Preview Feedback – works for both text and files */}
         <button
           type="button"
           onClick={handleSubmit(handlePreview)}
           disabled={isPreviewing || isSubmitting}
-          className="flex-1 bg-accent text-white font-medium py-3 px-6 rounded-lg hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-medium py-2.5 px-6 rounded-lg transition-all duration-200 shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
           {isPreviewing ? (
-            <span className="flex items-center justify-center">
-              <Loader2 className="animate-spin h-4 w-4 mr-2" />
+            <>
+              <Loader2 className="animate-spin h-4 w-4 mr-2" strokeWidth={2} />
               Generating Preview...
-            </span>
+            </>
           ) : (
-            <span className="flex items-center justify-center">
-              <Sparkles className="h-4 w-4 mr-2" />
+            <>
+              <Sparkles className="h-4 w-4 mr-2" strokeWidth={1.5} />
               Preview Feedback
-            </span>
+            </>
           )}
         </button>
 
-        {/* New Submission – saves and resets for next entry */}
         <button
           type="button"
           onClick={handleSubmit(handleSaveAndNew)}
           disabled={isSubmitting || isPreviewing}
-          className="flex-1 bg-primary text-white font-medium py-3 px-6 rounded-lg hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-medium py-2.5 px-6 rounded-lg transition-all duration-200 shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
           {isSubmitting ? (
-            <span className="flex items-center justify-center">
-              <Loader2 className="animate-spin h-4 w-4 mr-2" />
+            <>
+              <Loader2 className="animate-spin h-4 w-4 mr-2" strokeWidth={2} />
               Saving...
-            </span>
+            </>
           ) : (
-            <span className="flex items-center justify-center">
-              <Plus className="h-4 w-4 mr-2" />
+            <>
+              <Plus className="h-4 w-4 mr-2" strokeWidth={1.5} />
               New Submission
-            </span>
+            </>
           )}
         </button>
       </div>
 
-      <p className="text-xs text-text-muted text-center mt-2">
+      <p className="text-xs text-gray-400 text-center mt-2">
         {isFileSelected
           ? 'Click "Preview Feedback" to analyze your file, then "New Submission" to save and create another.'
           : 'Click "Preview Feedback" to get AI suggestions, then "New Submission" to save and continue.'}
