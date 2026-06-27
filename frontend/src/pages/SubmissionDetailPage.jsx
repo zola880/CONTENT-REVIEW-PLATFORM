@@ -4,7 +4,7 @@ import { getSubmissionById, regenerateFeedback } from '../api/submissions.api';
 import FeedbackDisplay from '../components/submissions/FeedbackDisplay';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import ErrorMessage from '../components/common/ErrorMessage';
-import { ArrowLeft, FileText, RefreshCw } from 'lucide-react';
+import { ArrowLeft, FileText, MessageCircle, RefreshCw } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 const SubmissionDetailPage = () => {
@@ -58,36 +58,43 @@ const SubmissionDetailPage = () => {
   });
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6">
       {/* Back Button */}
       <button
         onClick={() => navigate('/')}
         className="group inline-flex items-center text-sm text-text-muted hover:text-primary transition-colors duration-200 mb-6"
       >
-        <ArrowLeft className="h-4 w-4 mr-1 group-hover:-translate-x-0.5 transition-transform" strokeWidth={1.5} />
+        <ArrowLeft className="h-4 w-4 mr-1 group-hover:-translate-x-0.5 transition-transform" />
         Back to Dashboard
       </button>
 
-      {/* Title Card */}
-      <div className="bg-secondary rounded-xl shadow-sm border border-primary/5 p-6 md:p-8 mb-6">
-        <h1 className="text-2xl font-semibold text-text tracking-tight break-words">
-          {submission.title}
-        </h1>
-        <div className="flex flex-wrap items-center gap-3 mt-2 text-sm text-text-muted">
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent-dark">
-            {submission.category}
-          </span>
-          <span className="text-text-muted/20">•</span>
-          <span>{formattedDate}</span>
+      {/* Header Card */}
+      <div className="bg-secondary rounded-2xl shadow-md border border-primary/10 p-6 md:p-8 mb-6">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-2xl md:text-3xl font-bold text-text break-words">
+              {submission.title}
+            </h1>
+            <div className="flex flex-wrap items-center gap-3 mt-2 text-sm text-text-muted">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent-dark">
+                {submission.category}
+              </span>
+              <span className="flex items-center">
+                <span className="w-1 h-1 bg-text-muted/30 rounded-full mx-1.5"></span>
+                Created {formattedDate}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Content Section */}
-      <div className="bg-secondary rounded-xl shadow-sm border border-primary/5 p-6 md:p-8 mb-6">
-        <h2 className="text-sm font-medium text-text-muted uppercase tracking-wider mb-4">
-          Content
-        </h2>
-        <div className="bg-primary/5 rounded-lg p-4 md:p-6 border border-primary/5">
+      <div className="bg-secondary rounded-2xl shadow-md border border-primary/10 p-6 md:p-8 mb-6">
+        <div className="flex items-center space-x-2 mb-4">
+          <FileText className="h-5 w-5 text-primary" />
+          <h2 className="text-lg font-semibold text-text">Content</h2>
+        </div>
+        <div className="bg-primary/5 rounded-xl p-4 md:p-6 border border-primary/10">
           <p className="text-text whitespace-pre-wrap leading-relaxed">
             {submission.content}
           </p>
@@ -95,25 +102,26 @@ const SubmissionDetailPage = () => {
       </div>
 
       {/* Feedback Section */}
-      <div className="bg-secondary rounded-xl shadow-sm border border-primary/5 p-6 md:p-8">
+      <div className="bg-secondary rounded-2xl shadow-md border border-primary/10 p-6 md:p-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-          <h2 className="text-sm font-medium text-text-muted uppercase tracking-wider">
-            Feedback & Suggestions
-          </h2>
+          <div className="flex items-center space-x-2">
+            <MessageCircle className="h-5 w-5 text-accent" />
+            <h2 className="text-lg font-semibold text-text">Feedback & Suggestions</h2>
+          </div>
           <button
             onClick={handleRegenerate}
             disabled={regenerating}
-            className="inline-flex items-center px-3.5 py-1.5 text-sm font-medium text-primary bg-accent/10 hover:bg-accent/20 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center px-4 py-2 bg-accent text-primary font-medium text-sm rounded-lg hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {regenerating ? (
               <>
-                <RefreshCw className="animate-spin h-3.5 w-3.5 mr-1.5" strokeWidth={1.5} />
+                <RefreshCw className="animate-spin h-4 w-4 mr-1.5" />
                 Regenerating...
               </>
             ) : (
               <>
-                <RefreshCw className="h-3.5 w-3.5 mr-1.5" strokeWidth={1.5} />
-                Regenerate
+                <RefreshCw className="h-4 w-4 mr-1.5" />
+                Regenerate Feedback
               </>
             )}
           </button>

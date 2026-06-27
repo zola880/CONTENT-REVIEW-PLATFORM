@@ -11,6 +11,7 @@ import {
   Pencil,
   Trash2,
   FileText,
+  User,
 } from 'lucide-react';
 
 const Sidebar = ({ closeMobile }) => {
@@ -110,11 +111,11 @@ const Sidebar = ({ closeMobile }) => {
 
   return (
     <>
-      <div className="flex flex-col h-full bg-secondary border-r border-primary/10 shadow-md">
+      <div className="flex flex-col h-full bg-secondary border-r border-primary/10">
         {/* Logo */}
-        <div className="flex items-center h-16 px-4 border-b border-primary/10">
+        <div className="flex items-center justify-center h-16 border-b border-primary/10">
           <Link to="/" className="flex items-center space-x-2">
-            <FileText className="h-6 w-6 text-accent" strokeWidth={1.5} />
+            <FileText className="h-7 w-7 text-accent" strokeWidth={1.5} />
             <span className="text-lg font-semibold text-text tracking-tight">Content Review</span>
           </Link>
         </div>
@@ -131,9 +132,9 @@ const Sidebar = ({ closeMobile }) => {
                 setDropdownEl(null);
               }}
               className={({ isActive }) =>
-                `flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
+                `flex items-center px-3 py-2.5 text-sm rounded-lg transition-all duration-200 ${
                   isActive
-                    ? 'bg-primary text-white shadow-sm'
+                    ? 'bg-primary text-white font-medium shadow-sm'
                     : 'text-text-muted hover:bg-primary/5 hover:text-text'
                 }`
               }
@@ -147,7 +148,9 @@ const Sidebar = ({ closeMobile }) => {
         {/* Recent Submissions */}
         <div className="flex-1 overflow-y-auto px-3 py-4">
           <div className="flex items-center justify-between mb-2 px-1">
-            <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider">Recent</h3>
+            <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider">
+              Recent
+            </h3>
             <Link
               to="/"
               onClick={() => {
@@ -200,7 +203,7 @@ const Sidebar = ({ closeMobile }) => {
                   {dropdownOpen === sub._id && (
                     <div
                       ref={(el) => setDropdownEl(el)}
-                      className="absolute right-0 top-full mt-1 w-40 rounded-lg shadow-md bg-secondary ring-1 ring-primary/10 z-10 py-1"
+                      className="absolute right-0 top-full mt-1 w-40 rounded-lg shadow-lg bg-secondary ring-1 ring-primary/10 z-10 py-1"
                     >
                       <button
                         onClick={() => openRenameModal(sub)}
@@ -224,7 +227,7 @@ const Sidebar = ({ closeMobile }) => {
           )}
         </div>
 
-        {/* User Profile & Logout */}
+        {/* User & Logout */}
         <div className="border-t border-primary/10 px-3 py-4">
           <Link
             to="/account"
@@ -236,7 +239,7 @@ const Sidebar = ({ closeMobile }) => {
             className="flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-primary/5 transition-all duration-150"
           >
             <div className="flex-shrink-0">
-              <div className="h-9 w-9 rounded-full bg-primary text-white flex items-center justify-center text-sm font-semibold shadow-sm">
+              <div className="h-9 w-9 rounded-full bg-primary text-white flex items-center justify-center text-sm font-semibold">
                 {user?.name?.charAt(0).toUpperCase() || 'U'}
               </div>
             </div>
@@ -258,13 +261,13 @@ const Sidebar = ({ closeMobile }) => {
       {/* Rename Modal */}
       {renameModalOpen && (
         <div className="fixed inset-0 bg-primary/30 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-secondary rounded-lg shadow-md max-w-md w-full p-6 border border-primary/10">
+          <div className="bg-secondary rounded-2xl shadow-xl max-w-md w-full p-6">
             <h2 className="text-xl font-semibold text-text mb-4">Rename Submission</h2>
             <input
               type="text"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
-              className="w-full border border-primary/20 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent bg-secondary text-text transition shadow-sm focus:shadow-md"
+              className="w-full border border-primary/20 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent bg-secondary text-text transition"
               placeholder="Enter new title"
             />
             <div className="mt-4 flex justify-end space-x-2">
@@ -280,7 +283,7 @@ const Sidebar = ({ closeMobile }) => {
               </button>
               <button
                 onClick={handleRename}
-                className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-light transition shadow-sm hover:shadow-md"
+                className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-light transition"
               >
                 Save
               </button>
