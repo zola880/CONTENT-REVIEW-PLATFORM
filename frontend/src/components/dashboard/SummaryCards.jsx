@@ -92,7 +92,7 @@ const SummaryCards = () => {
         return (
           <div
             key={card.key}
-            className="bg-white rounded-xl shadow-sm border border-gray-200/50 p-6 hover:shadow-md hover:border-gray-200/80 transition-all duration-200"
+            className="bg-white border border-gray-200 rounded-lg p-6 shadow-xl transition-all duration-200 hover:shadow-2xl hover:border-gray-300"
           >
             <div className="flex items-start justify-between">
               <div>
@@ -103,7 +103,7 @@ const SummaryCards = () => {
                   {trend.value} <span className="text-gray-400 font-normal">vs last month</span>
                 </div>
               </div>
-              <div className={`${card.bg} p-3 rounded-xl`}>
+              <div className={`${card.bg} p-3 rounded-lg`}>
                 <card.icon className={`h-5 w-5 ${card.color}`} strokeWidth={1.5} />
               </div>
             </div>

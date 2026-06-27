@@ -84,7 +84,7 @@ const SubmissionForm = ({
         </label>
         <input
           {...register('title')}
-          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
+          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition shadow-sm focus:shadow"
           placeholder="Give your submission a clear title"
         />
         {errors.title && (
@@ -104,7 +104,7 @@ const SubmissionForm = ({
         </div>
 
         <div
-          className={`relative border-2 border-dashed rounded-lg p-4 transition ${
+          className={`relative border-2 border-dashed rounded-lg p-4 transition shadow-sm hover:shadow ${
             isFileSelected
               ? 'border-amber-300 bg-amber-50/50'
               : 'border-gray-200 hover:border-gray-300 bg-white'
@@ -158,7 +158,7 @@ const SubmissionForm = ({
               <textarea
                 {...register('content')}
                 rows="6"
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition resize-y"
+                className="w-full border border-gray-200 rounded-lg px-4 py-3 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition resize-y shadow-sm focus:shadow"
                 placeholder="Write your product description, blog post, or article here..."
                 disabled={isFileSelected}
               />
@@ -183,7 +183,7 @@ const SubmissionForm = ({
         </label>
         <select
           {...register('category')}
-          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition appearance-none"
+          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition shadow-sm focus:shadow appearance-none"
         >
           <option value="">Select a category</option>
           {CATEGORIES.map((cat) => (
@@ -201,7 +201,7 @@ const SubmissionForm = ({
           type="button"
           onClick={handleSubmit(handlePreview)}
           disabled={isPreviewing || isSubmitting}
-          className="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-medium py-2.5 px-6 rounded-lg transition-all duration-200 shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+          className="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-medium py-2.5 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
           {isPreviewing ? (
             <>
@@ -220,7 +220,7 @@ const SubmissionForm = ({
           type="button"
           onClick={handleSubmit(handleSaveAndNew)}
           disabled={isSubmitting || isPreviewing}
-          className="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-medium py-2.5 px-6 rounded-lg transition-all duration-200 shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+          className="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-medium py-2.5 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
           {isSubmitting ? (
             <>

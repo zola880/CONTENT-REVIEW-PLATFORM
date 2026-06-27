@@ -6,9 +6,8 @@ import { Plus, TrendingUp, BarChart3, Activity, Clock, CheckCircle, AlertCircle 
 
 const DashboardPage = () => {
   const { user } = useAuth();
-  const { submissions, loading } = useSubmissions(1, 5); // Fetch 5 most recent
+  const { submissions, loading } = useSubmissions(1, 5);
 
-  // Helper to format date
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString('en-US', {
       month: 'short',
@@ -17,7 +16,6 @@ const DashboardPage = () => {
     });
   };
 
-  // Helper to get status badge
   const getStatusBadge = (sub) => {
     if (sub.feedback && sub.feedback.readabilityScore && sub.feedback.clarityScore) {
       return { label: 'Analyzed', color: 'bg-green-100 text-green-800' };
@@ -37,7 +35,7 @@ const DashboardPage = () => {
         </div>
         <Link
           to="/submissions/new"
-          className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-all duration-200 shadow-sm hover:shadow-md flex-shrink-0"
+          className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-all duration-200 shadow-lg hover:shadow-xl flex-shrink-0"
         >
           <Plus className="h-4 w-4 mr-1.5" strokeWidth={1.5} />
           New Submission
@@ -47,23 +45,23 @@ const DashboardPage = () => {
       {/* Summary Cards */}
       <SummaryCards />
 
-      {/* Analytics Row - Charts (placeholder) */}
+      {/* Analytics Row - Sharp Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200/50 p-6">
+        <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-xl transition-all duration-200 hover:shadow-2xl hover:border-gray-300">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-medium text-gray-700">Submission Growth</h3>
             <TrendingUp className="h-4 w-4 text-gray-400" strokeWidth={1.5} />
           </div>
-          <div className="h-48 flex items-center justify-center bg-gray-50/50 rounded-lg border border-gray-200/30">
+          <div className="h-48 flex items-center justify-center bg-gray-50 rounded-lg border border-gray-200">
             <span className="text-sm text-gray-400">Chart placeholder – Recharts coming soon</span>
           </div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200/50 p-6">
+        <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-xl transition-all duration-200 hover:shadow-2xl hover:border-gray-300">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-medium text-gray-700">Readability Trend</h3>
             <BarChart3 className="h-4 w-4 text-gray-400" strokeWidth={1.5} />
           </div>
-          <div className="h-48 flex items-center justify-center bg-gray-50/50 rounded-lg border border-gray-200/30">
+          <div className="h-48 flex items-center justify-center bg-gray-50 rounded-lg border border-gray-200">
             <span className="text-sm text-gray-400">Chart placeholder – Recharts coming soon</span>
           </div>
         </div>
@@ -71,13 +69,13 @@ const DashboardPage = () => {
 
       {/* Recent Submissions Table & Activity Feed */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Table - takes 2/3 on large screens */}
+        {/* Table */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200/50 overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200/60 flex items-center justify-between">
+          <div className="bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden transition-all duration-200 hover:shadow-2xl">
+            <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-gray-50/50">
               <h3 className="text-sm font-medium text-gray-700">Recent Submissions</h3>
-              <Link to="/" className="text-sm text-teal-600 hover:text-teal-700 transition">
-                View All
+              <Link to="/" className="text-sm text-teal-600 hover:text-teal-700 transition font-medium">
+                View All →
               </Link>
             </div>
             {loading ? (
@@ -87,11 +85,11 @@ const DashboardPage = () => {
                 ))}
               </div>
             ) : submissions.length === 0 ? (
-              <div className="p-6 text-center text-gray-400 text-sm">No submissions yet</div>
+              <div className="p-8 text-center text-gray-400 text-sm">No submissions yet</div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
-                  <thead className="bg-gray-50/80 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <thead className="bg-gray-50/50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
                     <tr>
                       <th className="px-6 py-3 text-left">Title</th>
                       <th className="px-6 py-3 text-left">Category</th>
@@ -107,7 +105,7 @@ const DashboardPage = () => {
                       return (
                         <tr
                           key={sub._id}
-                          className="hover:bg-gray-50/50 transition-colors cursor-pointer"
+                          className="hover:bg-gray-50 transition-colors cursor-pointer"
                           onClick={() => window.location.href = `/submissions/${sub._id}`}
                         >
                           <td className="px-6 py-3 font-medium text-gray-900 truncate max-w-[150px]">
@@ -142,14 +140,13 @@ const DashboardPage = () => {
           </div>
         </div>
 
-        {/* Activity Feed - takes 1/3 */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200/50 p-6">
+        {/* Activity Feed */}
+        <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-xl transition-all duration-200 hover:shadow-2xl">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-medium text-gray-700">Recent Activity</h3>
             <Activity className="h-4 w-4 text-gray-400" strokeWidth={1.5} />
           </div>
           <div className="space-y-4">
-            {/* Mock activity items – replace with real data later */}
             <div className="flex items-start gap-3">
               <div className="mt-0.5">
                 <CheckCircle className="h-4 w-4 text-green-500" strokeWidth={1.5} />
@@ -177,7 +174,7 @@ const DashboardPage = () => {
                 <p className="text-xs text-gray-400">1 day ago</p>
               </div>
             </div>
-            <p className="text-xs text-gray-400 italic mt-2">Activity feed coming soon with real data</p>
+            <p className="text-xs text-gray-400 italic mt-3 pt-2 border-t border-gray-200">Activity feed coming soon with real data</p>
           </div>
         </div>
       </div>

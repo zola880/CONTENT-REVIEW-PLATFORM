@@ -12,11 +12,11 @@ const Layout = ({ children }) => {
   const closeSidebar = () => setSidebarOpen(false);
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div className="flex h-screen bg-gray-100 overflow-hidden">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-gray-900/20 backdrop-blur-sm z-20 md:hidden"
+          className="fixed inset-0 bg-gray-900/30 backdrop-blur-sm z-20 md:hidden"
           onClick={closeSidebar}
         />
       )}
@@ -24,7 +24,7 @@ const Layout = ({ children }) => {
       {/* Sidebar */}
       <aside
         className={`
-          fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-200/60 shadow-sm transform transition-transform duration-300 ease-in-out
+          fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-200 shadow-xl transform transition-transform duration-300 ease-in-out
           md:relative md:translate-x-0 md:flex md:flex-col
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
@@ -34,15 +34,15 @@ const Layout = ({ children }) => {
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Top header */}
-        <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200/60 px-4 sm:px-6 py-3 flex items-center justify-between sticky top-0 z-10">
+        {/* Top header – sharp & shadowed */}
+        <header className="bg-white border-b border-gray-200 shadow-lg px-4 sm:px-6 py-3 flex items-center justify-between sticky top-0 z-10">
           {/* Left: mobile menu + logo */}
           <div className="flex items-center gap-3">
             <button
               onClick={toggleSidebar}
               className="md:hidden text-gray-500 hover:text-gray-700 transition"
             >
-              {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {sidebarOpen ? <X className="h-5 w-5" strokeWidth={1.5} /> : <Menu className="h-5 w-5" strokeWidth={1.5} />}
             </button>
             <Link to="/" className="md:hidden text-lg font-semibold text-gray-900">
               Content Review
@@ -56,7 +56,7 @@ const Layout = ({ children }) => {
               <input
                 type="text"
                 placeholder="Search submissions..."
-                className="w-full pl-9 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
+                className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition shadow-sm focus:shadow"
               />
             </div>
           </div>
@@ -69,9 +69,9 @@ const Layout = ({ children }) => {
             <button className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition">
               <Settings className="h-5 w-5" strokeWidth={1.5} />
             </button>
-            <div className="h-6 w-px bg-gray-200/60 mx-1" />
+            <div className="h-6 w-px bg-gray-200 mx-1" />
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-teal-600 text-white flex items-center justify-center text-sm font-medium">
+              <div className="h-8 w-8 rounded-full bg-teal-600 text-white flex items-center justify-center text-sm font-medium shadow-sm">
                 {user?.name?.charAt(0).toUpperCase() || 'U'}
               </div>
               <span className="hidden sm:inline text-sm font-medium text-gray-700">

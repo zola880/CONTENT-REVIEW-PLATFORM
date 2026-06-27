@@ -64,9 +64,9 @@ const RecentSubmissionsCards = () => {
       </h2>
 
       <Link to={`/submissions/${submission._id}`} className="block group">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200/50 p-6 hover:shadow-md hover:border-gray-200/80 transition-all duration-200 relative overflow-hidden">
+        <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-xl transition-all duration-200 hover:shadow-2xl hover:border-gray-300 relative overflow-hidden">
           {/* Subtle accent gradient bar at top */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-500 to-amber-400 opacity-80" />
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-500 to-amber-400" />
 
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0 mt-0.5">

@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-  /* Base styling for modern SaaS look */
+  /* Base styling for sharp, modern SaaS look */
   body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+    @apply bg-gray-100 text-gray-900 antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
@@ -15,8 +15,8 @@
 
   /* Custom scrollbar */
   ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
@@ -40,25 +40,25 @@
 }
 
 @layer components {
-  /* Glassmorphism effect */
-  .glass {
-    @apply bg-white/80 backdrop-blur-lg border border-white/20;
+  /* Sharp card with heavy shadow – Vercel/Linear style */
+  .card-sharp {
+    @apply bg-white border border-gray-200 rounded-lg p-6 shadow-xl transition-all duration-200;
   }
-
-  /* Modern card with soft shadow */
-  .card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-200/50 p-6 transition-all duration-200;
-  }
-  .card:hover {
-    @apply shadow-md border-gray-200/80;
+  .card-sharp:hover {
+    @apply shadow-2xl border-gray-300;
   }
 
   /* Card with accent top border */
   .card-accent {
-    @apply bg-white rounded-xl shadow-sm border-t-4 p-6 transition-all duration-200;
+    @apply bg-white border border-gray-200 rounded-lg border-t-4 p-6 shadow-xl transition-all duration-200;
   }
   .card-accent:hover {
-    @apply shadow-md;
+    @apply shadow-2xl;
+  }
+
+  /* Glassmorphism effect */
+  .glass {
+    @apply bg-white/80 backdrop-blur-lg border border-white/20;
   }
 
   /* Dashboard container */
@@ -66,26 +66,26 @@
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6;
   }
 
-  /* Subtle divider */
+  /* Divider */
   .divider {
-    @apply border-t border-gray-200/60 my-6;
+    @apply border-t border-gray-200 my-6;
   }
 
-  /* Modern button */
+  /* Modern button – sharp & shadowed */
   .btn-primary {
-    @apply inline-flex items-center px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all duration-200 shadow-sm hover:shadow;
+    @apply inline-flex items-center px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all duration-200 shadow-md hover:shadow-lg;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 transition-all duration-200;
+    @apply inline-flex items-center px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 transition-all duration-200 shadow-sm hover:shadow;
   }
 
-  /* Input field */
+  /* Input field – sharp & clean */
   .input-field {
     @apply w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200;
   }
 
-  /* Badge */
+  /* Badges */
   .badge {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
   }
@@ -116,6 +116,11 @@
   /* Gradient text */
   .gradient-text {
     @apply bg-gradient-to-r from-teal-600 to-amber-500 bg-clip-text text-transparent;
+  }
+
+  /* Table row hover */
+  .table-row-hover {
+    @apply hover:bg-gray-50/80 transition-colors cursor-pointer;
   }
 
   /* Smooth transition for all interactive elements */
