@@ -110,17 +110,17 @@ const Sidebar = ({ closeMobile }) => {
 
   return (
     <>
-      <div className="flex flex-col h-full bg-white border-r border-gray-200 shadow-xl">
+      <div className="flex flex-col h-full bg-secondary border-r border-primary/10 shadow-md">
         {/* Logo */}
-        <div className="flex items-center h-16 px-4 border-b border-gray-200">
+        <div className="flex items-center h-16 px-4 border-b border-primary/10">
           <Link to="/" className="flex items-center space-x-2">
-            <FileText className="h-6 w-6 text-teal-600" strokeWidth={1.5} />
-            <span className="text-lg font-semibold text-gray-900 tracking-tight">Content Review</span>
+            <FileText className="h-6 w-6 text-accent" strokeWidth={1.5} />
+            <span className="text-lg font-semibold text-text tracking-tight">Content Review</span>
           </Link>
         </div>
 
         {/* Navigation */}
-        <nav className="px-3 py-4 space-y-0.5 border-b border-gray-200">
+        <nav className="px-3 py-4 space-y-0.5 border-b border-primary/10">
           {navigation.map((item) => (
             <NavLink
               key={item.name}
@@ -133,8 +133,8 @@ const Sidebar = ({ closeMobile }) => {
               className={({ isActive }) =>
                 `flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
                   isActive
-                    ? 'bg-teal-600 text-white shadow-sm'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    ? 'bg-primary text-white shadow-sm'
+                    : 'text-text-muted hover:bg-primary/5 hover:text-text'
                 }`
               }
             >
@@ -147,7 +147,7 @@ const Sidebar = ({ closeMobile }) => {
         {/* Recent Submissions */}
         <div className="flex-1 overflow-y-auto px-3 py-4">
           <div className="flex items-center justify-between mb-2 px-1">
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Recent</h3>
+            <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider">Recent</h3>
             <Link
               to="/"
               onClick={() => {
@@ -155,7 +155,7 @@ const Sidebar = ({ closeMobile }) => {
                 setDropdownOpen(null);
                 setDropdownEl(null);
               }}
-              className="text-xs text-teal-600 hover:text-teal-700 transition"
+              className="text-xs text-accent hover:text-accent-dark transition"
             >
               View All
             </Link>
@@ -164,16 +164,16 @@ const Sidebar = ({ closeMobile }) => {
           {loading ? (
             <div className="space-y-1.5">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-9 bg-gray-100 rounded-lg animate-pulse" />
+                <div key={i} className="h-9 bg-primary/5 rounded-lg animate-pulse" />
               ))}
             </div>
           ) : submissions.length === 0 ? (
-            <p className="text-sm text-gray-400 italic px-1">No submissions yet</p>
+            <p className="text-sm text-text-muted/60 italic px-1">No submissions yet</p>
           ) : (
             <ul className="space-y-0.5">
               {submissions.map((sub) => (
                 <li key={sub._id} className="relative">
-                  <div className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-100 transition-all duration-150 group">
+                  <div className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-primary/5 transition-all duration-150 group">
                     <Link
                       to={`/submissions/${sub._id}`}
                       onClick={() => {
@@ -181,7 +181,7 @@ const Sidebar = ({ closeMobile }) => {
                         setDropdownOpen(null);
                         setDropdownEl(null);
                       }}
-                      className="flex-1 text-sm text-gray-700 truncate"
+                      className="flex-1 text-sm text-text truncate"
                     >
                       {sub.title}
                     </Link>
@@ -192,7 +192,7 @@ const Sidebar = ({ closeMobile }) => {
                         setDropdownOpen(newState);
                         if (newState === null) setDropdownEl(null);
                       }}
-                      className="text-gray-400 hover:text-gray-600 focus:outline-none ml-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="text-text-muted/40 hover:text-text-muted focus:outline-none ml-2 opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <MoreVertical className="h-4 w-4" strokeWidth={1.5} />
                     </button>
@@ -200,18 +200,18 @@ const Sidebar = ({ closeMobile }) => {
                   {dropdownOpen === sub._id && (
                     <div
                       ref={(el) => setDropdownEl(el)}
-                      className="absolute right-0 top-full mt-1 w-40 rounded-lg shadow-lg bg-white ring-1 ring-gray-200 z-10 py-1"
+                      className="absolute right-0 top-full mt-1 w-40 rounded-lg shadow-md bg-secondary ring-1 ring-primary/10 z-10 py-1"
                     >
                       <button
                         onClick={() => openRenameModal(sub)}
-                        className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                        className="flex items-center w-full px-4 py-2 text-sm text-text hover:bg-primary/5 transition-colors"
                       >
                         <Pencil className="h-4 w-4 mr-2" strokeWidth={1.5} />
                         Rename
                       </button>
                       <button
                         onClick={() => handleDelete(sub._id)}
-                        className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition-colors"
+                        className="flex items-center w-full px-4 py-2 text-sm text-error hover:bg-primary/5 transition-colors"
                       >
                         <Trash2 className="h-4 w-4 mr-2" strokeWidth={1.5} />
                         Delete
@@ -225,7 +225,7 @@ const Sidebar = ({ closeMobile }) => {
         </div>
 
         {/* User Profile & Logout */}
-        <div className="border-t border-gray-200 px-3 py-4">
+        <div className="border-t border-primary/10 px-3 py-4">
           <Link
             to="/account"
             onClick={() => {
@@ -233,21 +233,21 @@ const Sidebar = ({ closeMobile }) => {
               setDropdownOpen(null);
               setDropdownEl(null);
             }}
-            className="flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-100 transition-all duration-150"
+            className="flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-primary/5 transition-all duration-150"
           >
             <div className="flex-shrink-0">
-              <div className="h-9 w-9 rounded-full bg-teal-600 text-white flex items-center justify-center text-sm font-semibold shadow-sm">
+              <div className="h-9 w-9 rounded-full bg-primary text-white flex items-center justify-center text-sm font-semibold shadow-sm">
                 {user?.name?.charAt(0).toUpperCase() || 'U'}
               </div>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">{user?.name}</p>
-              <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+              <p className="text-sm font-medium text-text truncate">{user?.name}</p>
+              <p className="text-xs text-text-muted truncate">{user?.email}</p>
             </div>
           </Link>
           <button
             onClick={handleLogout}
-            className="flex items-center w-full mt-1 px-2 py-2 text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all duration-150"
+            className="flex items-center w-full mt-1 px-2 py-2 text-sm text-text-muted hover:text-text hover:bg-primary/5 rounded-lg transition-all duration-150"
           >
             <LogOut className="h-4 w-4 mr-3" strokeWidth={1.5} />
             Sign out
@@ -257,14 +257,14 @@ const Sidebar = ({ closeMobile }) => {
 
       {/* Rename Modal */}
       {renameModalOpen && (
-        <div className="fixed inset-0 bg-gray-900/30 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 border border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Rename Submission</h2>
+        <div className="fixed inset-0 bg-primary/30 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-secondary rounded-lg shadow-md max-w-md w-full p-6 border border-primary/10">
+            <h2 className="text-xl font-semibold text-text mb-4">Rename Submission</h2>
             <input
               type="text"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition shadow-sm focus:shadow"
+              className="w-full border border-primary/20 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent bg-secondary text-text transition shadow-sm focus:shadow-md"
               placeholder="Enter new title"
             />
             <div className="mt-4 flex justify-end space-x-2">
@@ -274,13 +274,13 @@ const Sidebar = ({ closeMobile }) => {
                   setSelectedSubmission(null);
                   setNewTitle('');
                 }}
-                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition"
+                className="px-4 py-2 text-sm text-text-muted hover:text-text transition"
               >
                 Cancel
               </button>
               <button
                 onClick={handleRename}
-                className="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition shadow-sm hover:shadow"
+                className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-light transition shadow-sm hover:shadow-md"
               >
                 Save
               </button>
