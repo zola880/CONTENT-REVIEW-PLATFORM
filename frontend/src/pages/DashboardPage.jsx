@@ -19,7 +19,7 @@ const DashboardPage = () => {
         </div>
         <Link
           to="/submissions/new"
-          className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-white rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] flex-shrink-0"
+          className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] flex-shrink-0"
         >
           <Plus className="h-4 w-4 mr-2" strokeWidth={1.5} />
           New Submission

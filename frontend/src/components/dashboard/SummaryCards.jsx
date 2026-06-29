@@ -44,25 +44,16 @@ const SummaryCards = () => {
       label: 'Total Submissions',
       value: stats.total,
       icon: FileText,
-      gradient: 'from-indigo-500 to-indigo-400',
-      iconBg: 'bg-indigo-100',
-      iconColor: 'text-indigo-600',
     },
     {
       label: 'Avg Readability',
       value: stats.avgReadability + '%',
       icon: Eye,
-      gradient: 'from-emerald-500 to-emerald-400',
-      iconBg: 'bg-emerald-100',
-      iconColor: 'text-emerald-600',
     },
     {
       label: 'Avg Clarity',
       value: stats.avgClarity + '%',
       icon: Sparkles,
-      gradient: 'from-amber-500 to-amber-400',
-      iconBg: 'bg-amber-100',
-      iconColor: 'text-amber-600',
     },
   ];
 
@@ -71,15 +62,15 @@ const SummaryCards = () => {
       {cards.map((card) => (
         <div
           key={card.label}
-          className="bg-white rounded-xl border border-gray-200/60 shadow-xl shadow-gray-200/50 p-6 hover:shadow-2xl hover:shadow-gray-300/60 hover:border-gray-300/80 transition-all duration-200"
+          className="bg-white rounded-xl border border-gray-200/80 shadow-lg shadow-gray-200/50 p-6 hover:shadow-xl hover:shadow-gray-300/50 transition-all duration-200"
         >
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm font-medium text-gray-500">{card.label}</p>
               <p className="text-3xl font-bold text-gray-900 mt-1 tracking-tight">{card.value}</p>
             </div>
-            <div className={`${card.iconBg} p-3 rounded-xl`}>
-              <card.icon className={`h-5 w-5 ${card.iconColor}`} strokeWidth={1.5} />
+            <div className="bg-indigo-50 p-3 rounded-xl">
+              <card.icon className="h-5 w-5 text-indigo-600" strokeWidth={1.5} />
             </div>
           </div>
         </div>
