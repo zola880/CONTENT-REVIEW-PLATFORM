@@ -71,7 +71,7 @@ const SummaryCards = () => {
       {cards.map((card) => (
         <div
           key={card.label}
-          className="bg-white rounded-xl border border-gray-200/60 shadow-sm p-6 hover:shadow-md hover:border-gray-300/80 transition-all duration-200"
+          className="bg-white rounded-xl border border-gray-200/60 shadow-xl shadow-gray-200/50 p-6 hover:shadow-2xl hover:shadow-gray-300/60 hover:border-gray-300/80 transition-all duration-200"
         >
           <div className="flex items-start justify-between">
             <div>
