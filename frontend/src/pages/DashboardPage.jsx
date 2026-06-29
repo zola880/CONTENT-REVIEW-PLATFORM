@@ -8,37 +8,30 @@ const DashboardPage = () => {
   const { user } = useAuth();
 
   return (
-    <>
+    <div className="space-y-8">
       {/* Welcome Section */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-text tracking-tight">
-          Welcome back, <span className="text-primary">{user?.name?.split(' ')[0] || 'User'}</span>
-        </h1>
-        <p className="text-text-muted text-sm mt-1">Here's an overview of your content submissions</p>
-      </div>
-
-      {/* Action Bar */}
-      <div className="flex items-center justify-between mb-6">
-        <div />
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+            Welcome back, <span className="text-indigo-600">{user?.name?.split(' ')[0] || 'User'}</span>
+          </h1>
+          <p className="text-gray-500 text-sm mt-0.5">Here's an overview of your content submissions</p>
+        </div>
         <Link
           to="/submissions/new"
-          className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-light transition-all duration-200 shadow-sm hover:shadow"
+          className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-white rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] flex-shrink-0"
         >
-          <Plus className="h-4 w-4 mr-1.5" strokeWidth={1.5} />
+          <Plus className="h-4 w-4 mr-2" strokeWidth={1.5} />
           New Submission
         </Link>
       </div>
 
-      {/* Summary Cards */}
-      <div className="mt-6">
-        <SummaryCards />
-      </div>
+      {/* Statistics Cards */}
+      <SummaryCards />
 
-      {/* Recent Submissions */}
-      <div className="mt-10">
-        <RecentSubmissionsCards />
-      </div>
-    </>
+      {/* Latest Submission */}
+      <RecentSubmissionsCards />
+    </div>
   );
 };
 

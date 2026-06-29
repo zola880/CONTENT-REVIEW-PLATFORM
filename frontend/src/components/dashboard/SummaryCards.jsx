@@ -44,42 +44,42 @@ const SummaryCards = () => {
       label: 'Total Submissions',
       value: stats.total,
       icon: FileText,
-      color: 'text-primary',
-      bg: 'bg-primary/5',
-      iconBg: 'bg-primary/10',
+      gradient: 'from-indigo-500 to-indigo-400',
+      iconBg: 'bg-indigo-100',
+      iconColor: 'text-indigo-600',
     },
     {
       label: 'Avg Readability',
       value: stats.avgReadability + '%',
       icon: Eye,
-      color: 'text-accent',
-      bg: 'bg-accent/5',
-      iconBg: 'bg-accent/10',
+      gradient: 'from-emerald-500 to-emerald-400',
+      iconBg: 'bg-emerald-100',
+      iconColor: 'text-emerald-600',
     },
     {
       label: 'Avg Clarity',
       value: stats.avgClarity + '%',
       icon: Sparkles,
-      color: 'text-success',
-      bg: 'bg-success/5',
-      iconBg: 'bg-success/10',
+      gradient: 'from-amber-500 to-amber-400',
+      iconBg: 'bg-amber-100',
+      iconColor: 'text-amber-600',
     },
   ];
 
   return (
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {cards.map((card, idx) => (
+      {cards.map((card) => (
         <div
-          key={idx}
-          className="bg-secondary rounded-xl shadow-sm border border-primary/5 p-6 hover:shadow-md transition-all duration-200"
+          key={card.label}
+          className="bg-white rounded-xl border border-gray-200/60 shadow-sm p-6 hover:shadow-md hover:border-gray-300/80 transition-all duration-200"
         >
-          <div className="flex items-center justify-between">
+          <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm font-medium text-text-muted">{card.label}</p>
-              <p className="text-2xl font-semibold text-text mt-0.5">{card.value}</p>
+              <p className="text-sm font-medium text-gray-500">{card.label}</p>
+              <p className="text-3xl font-bold text-gray-900 mt-1 tracking-tight">{card.value}</p>
             </div>
             <div className={`${card.iconBg} p-3 rounded-xl`}>
-              <card.icon className={`h-5 w-5 ${card.color}`} strokeWidth={1.5} />
+              <card.icon className={`h-5 w-5 ${card.iconColor}`} strokeWidth={1.5} />
             </div>
           </div>
         </div>
