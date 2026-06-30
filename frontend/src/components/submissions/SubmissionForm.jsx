@@ -79,12 +79,12 @@ const SubmissionForm = ({
     <form className="space-y-6">
       {/* Title */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-[#1F2937] mb-1">
           Title <span className="text-red-500">*</span>
         </label>
         <input
           {...register('title')}
-          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition shadow-sm focus:shadow"
+          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 bg-white text-[#1F2937] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-transparent transition shadow-sm focus:shadow"
           placeholder="Give your submission a clear title"
         />
         {errors.title && (
@@ -95,7 +95,7 @@ const SubmissionForm = ({
       {/* Content & File Upload Section */}
       <div>
         <div className="flex items-center justify-between mb-1">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-[#1F2937]">
             Content <span className="text-red-500">*</span>
           </label>
           <span className="text-xs text-gray-400">
@@ -106,7 +106,7 @@ const SubmissionForm = ({
         <div
           className={`relative border-2 border-dashed rounded-lg p-4 transition shadow-sm hover:shadow ${
             isFileSelected
-              ? 'border-amber-300 bg-amber-50/50'
+              ? 'border-[#0F766E]/30 bg-[#0F766E]/5'
               : 'border-gray-200 hover:border-gray-300 bg-white'
           }`}
         >
@@ -133,7 +133,7 @@ const SubmissionForm = ({
               </>
             ) : (
               <div className="flex items-center flex-1 min-w-0">
-                <File className="h-6 w-6 text-amber-600 mr-2 flex-shrink-0" strokeWidth={1.5} />
+                <File className="h-6 w-6 text-[#0F766E] mr-2 flex-shrink-0" strokeWidth={1.5} />
                 <span className="text-sm text-gray-700 truncate flex-1">{selectedFile.name}</span>
                 <span className="text-xs text-gray-400 ml-2 flex-shrink-0">
                   {(selectedFile.size / 1024).toFixed(1)} KB
@@ -158,7 +158,7 @@ const SubmissionForm = ({
               <textarea
                 {...register('content')}
                 rows="6"
-                className="w-full border border-gray-200 rounded-lg px-4 py-3 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition resize-y shadow-sm focus:shadow"
+                className="w-full border border-gray-200 rounded-lg px-4 py-3 bg-white text-[#1F2937] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-transparent transition resize-y shadow-sm focus:shadow"
                 placeholder="Write your product description, blog post, or article here..."
                 disabled={isFileSelected}
               />
@@ -178,12 +178,12 @@ const SubmissionForm = ({
 
       {/* Category */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-[#1F2937] mb-1">
           Category <span className="text-red-500">*</span>
         </label>
         <select
           {...register('category')}
-          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition shadow-sm focus:shadow appearance-none"
+          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 bg-white text-[#1F2937] focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-transparent transition shadow-sm focus:shadow appearance-none"
         >
           <option value="">Select a category</option>
           {CATEGORIES.map((cat) => (
@@ -201,7 +201,7 @@ const SubmissionForm = ({
           type="button"
           onClick={handleSubmit(handlePreview)}
           disabled={isPreviewing || isSubmitting}
-          className="flex-1 bg-amber-500 hover:bg-amber-600 text-white font-medium py-2.5 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+          className="flex-1 border border-[#0F766E] text-[#0F766E] bg-white hover:bg-[#0F766E]/5 font-medium py-2.5 px-6 rounded-lg transition-all duration-200 shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
           {isPreviewing ? (
             <>
@@ -220,7 +220,7 @@ const SubmissionForm = ({
           type="button"
           onClick={handleSubmit(handleSaveAndNew)}
           disabled={isSubmitting || isPreviewing}
-          className="flex-1 bg-teal-600 hover:bg-teal-700 text-white font-medium py-2.5 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+          className="flex-1 bg-[#0F766E] hover:bg-[#115E59] text-white font-medium py-2.5 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
           {isSubmitting ? (
             <>

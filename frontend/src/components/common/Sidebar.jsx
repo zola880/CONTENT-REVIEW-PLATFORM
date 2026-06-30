@@ -110,12 +110,12 @@ const Sidebar = ({ closeMobile }) => {
 
   return (
     <>
-      <div className="flex flex-col h-full bg-gray-900 text-gray-300 w-64 border-r border-gray-800">
+      <div className="flex flex-col h-full bg-[#E5E7EB] text-[#1F2937] w-64 border-r border-gray-200">
         {/* Logo */}
-        <div className="flex items-center h-16 px-6 border-b border-gray-800">
+        <div className="flex items-center h-16 px-6 border-b border-gray-200">
           <Link to="/" className="flex items-center space-x-2.5">
-            <FileText className="h-5 w-5 text-indigo-400" strokeWidth={1.5} />
-            <span className="text-base font-semibold text-white tracking-tight">Content Review</span>
+            <FileText className="h-5 w-5 text-[#0F766E]" strokeWidth={1.5} />
+            <span className="text-base font-semibold text-[#1F2937] tracking-tight">Content Review</span>
           </Link>
         </div>
 
@@ -133,8 +133,8 @@ const Sidebar = ({ closeMobile }) => {
               className={({ isActive }) =>
                 `flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-150 ${
                   isActive
-                    ? 'bg-indigo-600 text-white shadow-sm'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    ? 'bg-[#0F766E] text-white shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
                 }`
               }
             >
@@ -145,9 +145,9 @@ const Sidebar = ({ closeMobile }) => {
         </nav>
 
         {/* Recent Submissions */}
-        <div className="flex-1 overflow-y-auto px-3 py-2 border-t border-gray-800">
+        <div className="flex-1 overflow-y-auto px-3 py-2 border-t border-gray-200">
           <div className="flex items-center justify-between px-1 mb-2">
-            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">Recent</h3>
+            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wider">Recent</h3>
             <Link
               to="/"
               onClick={() => {
@@ -155,7 +155,7 @@ const Sidebar = ({ closeMobile }) => {
                 setDropdownOpen(null);
                 setDropdownEl(null);
               }}
-              className="text-xs text-indigo-400 hover:text-indigo-300 transition"
+              className="text-xs text-[#0F766E] hover:text-[#115E59] transition"
             >
               View All
             </Link>
@@ -164,16 +164,16 @@ const Sidebar = ({ closeMobile }) => {
           {loading ? (
             <div className="space-y-1.5">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-9 bg-gray-800/50 rounded-lg animate-pulse" />
+                <div key={i} className="h-9 bg-gray-200 rounded-lg animate-pulse" />
               ))}
             </div>
           ) : submissions.length === 0 ? (
-            <p className="text-sm text-gray-500 italic px-1">No submissions yet</p>
+            <p className="text-sm text-gray-400 italic px-1">No submissions yet</p>
           ) : (
             <ul className="space-y-0.5">
               {submissions.map((sub) => (
                 <li key={sub._id} className="relative">
-                  <div className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-800/50 transition-all duration-150 group">
+                  <div className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-200 transition-all duration-150 group">
                     <Link
                       to={`/submissions/${sub._id}`}
                       onClick={() => {
@@ -181,7 +181,7 @@ const Sidebar = ({ closeMobile }) => {
                         setDropdownOpen(null);
                         setDropdownEl(null);
                       }}
-                      className="flex-1 text-sm text-gray-300 truncate"
+                      className="flex-1 text-sm text-gray-700 truncate"
                     >
                       {sub.title}
                     </Link>
@@ -192,7 +192,7 @@ const Sidebar = ({ closeMobile }) => {
                         setDropdownOpen(newState);
                         if (newState === null) setDropdownEl(null);
                       }}
-                      className="text-gray-600 hover:text-gray-400 focus:outline-none ml-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="text-gray-400 hover:text-gray-600 focus:outline-none ml-2 opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <MoreVertical className="h-4 w-4" strokeWidth={1.5} />
                     </button>
@@ -200,18 +200,18 @@ const Sidebar = ({ closeMobile }) => {
                   {dropdownOpen === sub._id && (
                     <div
                       ref={(el) => setDropdownEl(el)}
-                      className="absolute right-0 top-full mt-1 w-40 rounded-lg shadow-lg bg-gray-800 border border-gray-700 z-10 py-1"
+                      className="absolute right-0 top-full mt-1 w-40 rounded-lg shadow-lg bg-white border border-gray-200 z-10 py-1"
                     >
                       <button
                         onClick={() => openRenameModal(sub)}
-                        className="flex items-center w-full px-3 py-2 text-sm text-gray-300 hover:bg-gray-700/50 transition-colors"
+                        className="flex items-center w-full px-3 py-2 text-sm text-[#1F2937] hover:bg-gray-100 transition-colors"
                       >
                         <Pencil className="h-4 w-4 mr-2" strokeWidth={1.5} />
                         Rename
                       </button>
                       <button
                         onClick={() => handleDelete(sub._id)}
-                        className="flex items-center w-full px-3 py-2 text-sm text-red-400 hover:bg-gray-700/50 transition-colors"
+                        className="flex items-center w-full px-3 py-2 text-sm text-red-500 hover:bg-gray-100 transition-colors"
                       >
                         <Trash2 className="h-4 w-4 mr-2" strokeWidth={1.5} />
                         Delete
@@ -225,7 +225,7 @@ const Sidebar = ({ closeMobile }) => {
         </div>
 
         {/* User & Logout */}
-        <div className="border-t border-gray-800 px-4 py-4">
+        <div className="border-t border-gray-200 px-4 py-4">
           <Link
             to="/account"
             onClick={() => {
@@ -233,21 +233,21 @@ const Sidebar = ({ closeMobile }) => {
               setDropdownOpen(null);
               setDropdownEl(null);
             }}
-            className="flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-800/50 transition-all duration-150"
+            className="flex items-center space-x-3 px-2 py-2 rounded-lg hover:bg-gray-200 transition-all duration-150"
           >
             <div className="flex-shrink-0">
-              <div className="h-9 w-9 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-semibold shadow-sm">
+              <div className="h-9 w-9 rounded-full bg-[#0F766E] text-white flex items-center justify-center text-sm font-semibold shadow-sm">
                 {user?.name?.charAt(0).toUpperCase() || 'U'}
               </div>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">{user?.name || 'User'}</p>
-              <p className="text-xs text-gray-400 truncate">{user?.email || 'user@example.com'}</p>
+              <p className="text-sm font-medium text-[#1F2937] truncate">{user?.name || 'User'}</p>
+              <p className="text-xs text-gray-500 truncate">{user?.email || 'user@example.com'}</p>
             </div>
           </Link>
           <button
             onClick={handleLogout}
-            className="flex items-center w-full mt-1 px-2 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800/50 rounded-lg transition-all duration-150"
+            className="flex items-center w-full mt-1 px-2 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded-lg transition-all duration-150"
           >
             <LogOut className="h-4 w-4 mr-3" strokeWidth={1.5} />
             Sign out
@@ -255,16 +255,16 @@ const Sidebar = ({ closeMobile }) => {
         </div>
       </div>
 
-      {/* Rename Modal - adjusted for dark theme */}
+      {/* Rename Modal */}
       {renameModalOpen && (
-        <div className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Rename Submission</h2>
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-200">
+            <h2 className="text-lg font-semibold text-[#1F2937] mb-4">Rename Submission</h2>
             <input
               type="text"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-transparent bg-white text-[#1F2937] transition"
               placeholder="Enter new title"
             />
             <div className="mt-4 flex justify-end space-x-2">
@@ -274,13 +274,13 @@ const Sidebar = ({ closeMobile }) => {
                   setSelectedSubmission(null);
                   setNewTitle('');
                 }}
-                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition"
+                className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 transition"
               >
                 Cancel
               </button>
               <button
                 onClick={handleRename}
-                className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition shadow-sm"
+                className="px-4 py-2 bg-[#0F766E] text-white text-sm font-medium rounded-lg hover:bg-[#115E59] transition shadow-sm"
               >
                 Save
               </button>

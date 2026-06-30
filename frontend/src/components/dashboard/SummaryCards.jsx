@@ -62,15 +62,15 @@ const SummaryCards = () => {
       {cards.map((card) => (
         <div
           key={card.label}
-          className="bg-white rounded-xl border border-gray-200/80 shadow-lg shadow-gray-200/50 p-6 hover:shadow-xl hover:shadow-gray-300/50 transition-all duration-200"
+          className="bg-white rounded-xl border border-gray-200/80 shadow-lg shadow-gray-200/50 p-6 hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-200"
         >
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm font-medium text-gray-500">{card.label}</p>
-              <p className="text-3xl font-bold text-gray-900 mt-1 tracking-tight">{card.value}</p>
+              <p className="text-3xl font-bold text-[#1F2937] mt-1 tracking-tight">{card.value}</p>
             </div>
-            <div className="bg-indigo-50 p-3 rounded-xl">
-              <card.icon className="h-5 w-5 text-indigo-600" strokeWidth={1.5} />
+            <div className="bg-[#0F766E]/10 p-3 rounded-xl">
+              <card.icon className="h-5 w-5 text-[#0F766E]" strokeWidth={1.5} />
             </div>
           </div>
         </div>

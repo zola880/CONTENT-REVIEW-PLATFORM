@@ -62,25 +62,25 @@ const SubmissionDetailPage = () => {
       {/* Back Button */}
       <button
         onClick={() => navigate('/')}
-        className="group inline-flex items-center text-sm text-text-muted hover:text-primary transition-colors duration-200 mb-6"
+        className="group inline-flex items-center text-sm text-gray-500 hover:text-[#0F766E] transition-colors duration-200 mb-6"
       >
         <ArrowLeft className="h-4 w-4 mr-1 group-hover:-translate-x-0.5 transition-transform" />
         Back to Dashboard
       </button>
 
       {/* Header Card */}
-      <div className="bg-secondary rounded-2xl shadow-md border border-primary/10 p-6 md:p-8 mb-6">
+      <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-6 md:p-8 mb-6">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
           <div className="flex-1 min-w-0">
-            <h1 className="text-2xl md:text-3xl font-bold text-text break-words">
+            <h1 className="text-2xl md:text-3xl font-bold text-[#1F2937] break-words">
               {submission.title}
             </h1>
-            <div className="flex flex-wrap items-center gap-3 mt-2 text-sm text-text-muted">
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent-dark">
+            <div className="flex flex-wrap items-center gap-3 mt-2 text-sm text-gray-500">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#0F766E]/10 text-[#0F766E]">
                 {submission.category}
               </span>
               <span className="flex items-center">
-                <span className="w-1 h-1 bg-text-muted/30 rounded-full mx-1.5"></span>
+                <span className="w-1 h-1 bg-gray-300 rounded-full mx-1.5"></span>
                 Created {formattedDate}
               </span>
             </div>
@@ -89,29 +89,29 @@ const SubmissionDetailPage = () => {
       </div>
 
       {/* Content Section */}
-      <div className="bg-secondary rounded-2xl shadow-md border border-primary/10 p-6 md:p-8 mb-6">
+      <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-6 md:p-8 mb-6">
         <div className="flex items-center space-x-2 mb-4">
-          <FileText className="h-5 w-5 text-primary" />
-          <h2 className="text-lg font-semibold text-text">Content</h2>
+          <FileText className="h-5 w-5 text-[#0F766E]" />
+          <h2 className="text-lg font-semibold text-[#1F2937]">Content</h2>
         </div>
-        <div className="bg-primary/5 rounded-xl p-4 md:p-6 border border-primary/10">
-          <p className="text-text whitespace-pre-wrap leading-relaxed">
+        <div className="bg-gray-50 rounded-xl p-4 md:p-6 border border-gray-200">
+          <p className="text-[#1F2937] whitespace-pre-wrap leading-relaxed">
             {submission.content}
           </p>
         </div>
       </div>
 
       {/* Feedback Section */}
-      <div className="bg-secondary rounded-2xl shadow-md border border-primary/10 p-6 md:p-8">
+      <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-6 md:p-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
           <div className="flex items-center space-x-2">
-            <MessageCircle className="h-5 w-5 text-accent" />
-            <h2 className="text-lg font-semibold text-text">Feedback & Suggestions</h2>
+            <MessageCircle className="h-5 w-5 text-[#0F766E]" />
+            <h2 className="text-lg font-semibold text-[#1F2937]">Feedback & Suggestions</h2>
           </div>
           <button
             onClick={handleRegenerate}
             disabled={regenerating}
-            className="inline-flex items-center px-4 py-2 bg-accent text-primary font-medium text-sm rounded-lg hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center px-4 py-2 bg-[#0F766E] text-white font-medium text-sm rounded-lg hover:bg-[#115E59] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0F766E] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {regenerating ? (
               <>

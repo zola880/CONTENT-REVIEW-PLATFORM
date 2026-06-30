@@ -75,11 +75,11 @@ const SubmissionList = () => {
                   className="hover:bg-gray-50/80 transition-colors cursor-pointer"
                   onClick={() => window.location.href = `/submissions/${sub._id}`}
                 >
-                  <td className="px-6 py-4 font-medium text-gray-900 truncate max-w-[150px]">
+                  <td className="px-6 py-4 font-medium text-[#1F2937] truncate max-w-[150px]">
                     {sub.title}
                   </td>
                   <td className="px-6 py-4 text-gray-600">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#0F766E]/10 text-[#0F766E]">
                       {sub.category}
                     </span>
                   </td>
@@ -96,7 +96,7 @@ const SubmissionList = () => {
                     <div className="flex items-center justify-end space-x-2">
                       <Link
                         to={`/submissions/${sub._id}`}
-                        className="text-indigo-600 hover:text-indigo-700 font-medium"
+                        className="text-[#0F766E] hover:text-[#115E59] font-medium"
                       >
                         View
                       </Link>
@@ -161,14 +161,14 @@ const SubmissionList = () => {
 
       {/* Rename Modal */}
       {showRenameModal && (
-        <div className="fixed inset-0 bg-gray-900/20 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Rename Submission</h2>
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 border border-gray-200">
+            <h2 className="text-lg font-semibold text-[#1F2937] mb-4">Rename Submission</h2>
             <input
               type="text"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#0F766E] focus:border-transparent bg-white text-[#1F2937] transition"
               placeholder="Enter new title"
             />
             <div className="mt-4 flex justify-end space-x-2">
@@ -178,13 +178,13 @@ const SubmissionList = () => {
                   setSelectedSubmission(null);
                   setNewTitle('');
                 }}
-                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition"
+                className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 transition"
               >
                 Cancel
               </button>
               <button
                 onClick={handleRename}
-                className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition shadow-sm"
+                className="px-4 py-2 bg-[#0F766E] text-white text-sm font-medium rounded-lg hover:bg-[#115E59] transition shadow-sm"
               >
                 Save
               </button>

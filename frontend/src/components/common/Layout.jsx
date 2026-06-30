@@ -9,11 +9,11 @@ const Layout = ({ children }) => {
   const closeSidebar = () => setSidebarOpen(false);
 
   return (
-    <div className="flex h-screen bg-secondary overflow-hidden">
+    <div className="flex h-screen bg-[#FAFAF9] overflow-hidden">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-primary/40 backdrop-blur-sm z-20 md:hidden"
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-20 md:hidden"
           onClick={closeSidebar}
         />
       )}
@@ -21,7 +21,7 @@ const Layout = ({ children }) => {
       {/* Sidebar */}
       <aside
         className={`
-          fixed inset-y-0 left-0 z-30 w-64 bg-primary shadow-xl transform transition-transform duration-300 ease-in-out
+          fixed inset-y-0 left-0 z-30 w-64 bg-[#E5E7EB] shadow-xl transform transition-transform duration-300 ease-in-out
           md:relative md:translate-x-0 md:flex md:flex-col
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
@@ -32,11 +32,11 @@ const Layout = ({ children }) => {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Mobile header */}
-        <div className="md:hidden bg-primary px-4 py-3 flex items-center justify-between">
-          <button onClick={toggleSidebar} className="text-white hover:text-accent transition">
+        <div className="md:hidden bg-[#E5E7EB] px-4 py-3 flex items-center justify-between">
+          <button onClick={toggleSidebar} className="text-gray-600 hover:text-[#0F766E] transition">
             {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
-          <span className="text-white font-semibold text-lg tracking-tight">Content Review</span>
+          <span className="text-[#1F2937] font-semibold text-lg tracking-tight">Content Review</span>
           <div className="w-6" />
         </div>
 
